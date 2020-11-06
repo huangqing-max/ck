@@ -1,23 +1,35 @@
 <script>
 export default {
+	
+	 globalData: {  
+	    city: '',  
+		areaid:'',
+		dir:'',
+	  }, 
 	onLaunch: function() {
-		console.log('App Launch');
+		
+		// console.log('App Launch');
 	},
 	onShow: function() {
-		console.log('App Show');
+		
+		// console.log('App Show');
 	},
 	onHide: function() {
-		console.log('App Hide');
-	}
+		
+		// console.log('App Hide');
+	},
+	
 };
 </script>
 
-<style>
+<style lang="scss">
+	
+	@import "uview-ui/index.scss";
 /* 解决头条小程序组件内引入字体不生效的问题 */
 /* #ifdef MP-TOUTIAO */
-@font-face {
-	font-family: uniicons;
-	src: url('/static/uni.ttf');
-}
+// @font-face {
+// 	font-family: uniicons;
+// 	src: url('/static/uni.ttf');
+// }
 /* #endif */
 </style>

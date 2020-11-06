@@ -1,14 +1,395 @@
 {
-	"pages": [{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "uni-ui基础项目"
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [
+		
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/my/login",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/index/index-children/address/address",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/company/company",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/company/company-detail",
+			"style" : {
+			      // "navigationBarTitleText" : "装修公司",
+			      "app-plus": {
+			          "bounce": "none", //关闭窗口回弹效果
+			          "titleNView": {
+			              "buttons": [ //原生标题栏按钮配置,
+			                  {
+			           		    "type":"none",
+			           		    "float":"right"
+			                  }
+			               ]
+			           }
+			       }
+			  }
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/render/render",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}, 
+		{
+			"path": "pages/render/render-list",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/render/render-construction",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/render/webView",
+			"style" : {
+			      // "navigationBarTitleText" : "效果图",
+			      "app-plus": {
+			          "bounce": "none", //关闭窗口回弹效果
+			          "titleNView": {
+			              "buttons": [ //原生标题栏按钮配置,
+			                  {
+			           		    "type":"none",
+			           		    "float":"right"
+			                  }
+			               ]
+			           }
+			       }
+			  }
+		},
+		{
+			"path": "pages/index/index-children/search/search",
+			"style": {}
+		},
+		{
+			"path": "pages/index/index-children/learn/learn",
+			"style": {}
+		}, 
+		{
+			"path": "pages/index/index-children/learn/learn-detail",
+			"style" : {
+			      // "navigationBarTitleText" : "装修知识",
+			      "app-plus": {
+			          "bounce": "none", //关闭窗口回弹效果
+			          "titleNView": {
+			              "buttons": [ //原生标题栏按钮配置,
+			                  {
+			           		    "type":"none",
+			           		    "float":"right"
+			                  }
+			               ]
+			           }
+			       }
+			  }
+		},
+		{
+			"path": "pages/index/index-children/answers/answers",
+			"style": {}
+		},
+		{
+			"path": "pages/index/index-children/answers/answers-detail",
+			"style" : {
+			      // "navigationBarTitleText" : "装修问答",
+			      "app-plus": {
+			          "bounce": "none", //关闭窗口回弹效果
+			          "titleNView": {
+			              "buttons": [ //原生标题栏按钮配置,
+			                  {
+			           		    "type":"none",
+			           		    "float":"right"
+			                  }
+			               ]
+			           }
+			       }
+			  }
+		},
+		{
+			"path": "pages/index/index-children/local_cell/local_cell",
+			"style": {}
+		}, {
+			"path": "pages/index/index-children/local_cell/village",
+			"style": {}
+		}, 
+		{
+			"path": "pages/index/index-children/video/video",
+			"style": {}
+		}, 
+		{
+			"path": "pages/index/index-children/video/video-detail",
+			"style" : {
+			      // "navigationBarTitleText" : "装修视频",
+			      "app-plus": {
+			          "bounce": "none", //关闭窗口回弹效果
+			          "titleNView": {
+			              "buttons": [ //原生标题栏按钮配置,
+			                  {
+			           		    "type":"none",
+			           		    "float":"right"
+			                  }
+			               ]
+			           }
+			       }
+			  }
+		},
+		{
+			"path": "pages/index/index-children/case/case",
+			"style": {}
+		},
+		{
+			"path": "pages/index/index-children/case/detail",
+			"style": {}
+		},
+		{
+			"path": "pages/index/index-children/case/detailCompany",
+			"style" : {
+			      // "navigationBarTitleText" : "0元设计",
+			      "app-plus": {
+			          "bounce": "none", //关闭窗口回弹效果
+			          "titleNView": {
+			              "buttons": [ //原生标题栏按钮配置,
+			                  {
+			           		    "type":"none",
+			           		    "float":"right"
+			                  }
+			               ]
+			           }
+			       }
+			  }
+		},
+		{
+			"path": "pages/index/index-children/zero/zero",
+			"style" : {
+			      // "navigationBarTitleText" : "0元设计",
+			      "app-plus": {
+			          "bounce": "none", //关闭窗口回弹效果
+			          "titleNView": {
+			              "buttons": [ //原生标题栏按钮配置,
+			                  {
+			           		    "type":"none",
+			           		    "float":"right"
+			                  }
+			               ]
+			           }
+			       }
+			  }
 		}
-	}],
+	    ,{
+            "path" : "pages/index/index-children/bidding/bidding",
+            "style" : {
+                  // "navigationBarTitleText" : "装修招标",
+                  "app-plus": {
+                      "bounce": "none", //关闭窗口回弹效果
+                      "titleNView": {
+                          "buttons": [ //原生标题栏按钮配置,
+                              {
+                       		    "type":"none",
+                       		    "float":"right"
+                              }
+                           ]
+                       }
+                   }
+              }
+        }
+        ,{
+            "path" : "pages/index/index-children/intelligent/intelligent",
+            "style" : {
+                  // "navigationBarTitleText" : "智选公司",
+                  "app-plus": {
+                      "bounce": "none", //关闭窗口回弹效果
+                      "titleNView": {
+                          "buttons": [ //原生标题栏按钮配置,
+                              {
+                       		    "type":"none",
+                       		    "float":"right"
+                              }
+                           ]
+                       }
+                   }
+              }
+        }
+        ,{
+            "path" : "pages/my/my-children/userinfo/userinfo",
+            "style" : {}
+        }
+		,{
+		    "path" : "pages/my/my-children/userinfo/user-detail",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/my/my-children/my-bidding/my-bidding",
+            "style" : {}
+        },
+		{
+		    "path" : "pages/my/my-children/my-bidding/prefect-infomation",
+		    "style" : {}
+		},
+		{
+		    "path" : "pages/my/my-children/my-bidding/bidding-detail",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/my/my-children/about-us/about-us",
+            "style" : {
+                  "navigationBarTitleText" : "关于我们",
+                  "app-plus": {
+                      "bounce": "none", //关闭窗口回弹效果
+                      "titleNView": {
+                          "buttons": [ //原生标题栏按钮配置,
+                              {
+                       		    "type":"none",
+                       		    "float":"right"
+                              }
+                           ]
+                       }
+                   }
+              }
+        }
+        ,{
+            "path" : "pages/my/my-children/station-infomation/station-infomation",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/my/my-children/contract-list/contract-list",
+            "style" : {}
+        }
+		,{
+		    "path" : "pages/my/my-children/contract-list/list-detail",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/my/my-children/upload-contract/upload-contract",
+            "style" : {}
+        },
+		{
+		    "path" : "pages/my/my-children/station-infomation/station-detail",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/my/my-children/set/set",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/render/search/search",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/index-children/index-detail/index-detail",
+            "style" : {
+                  // "navigationBarTitleText" : "",
+                  "app-plus": {
+                      "bounce": "none", //关闭窗口回弹效果
+                      "titleNView": {
+                          "buttons": [ //原生标题栏按钮配置,
+                              {
+                       		    "type":"none",
+                       		    "float":"right"
+                              }
+                           ]
+                       }
+                   }
+              }
+        }
+        ,{
+            "path" : "pages/index/index-children/local_cell/local-case",
+            "style" : {
+                  // "navigationBarTitleText" : "装修公司",
+                  "app-plus": {
+                      "bounce": "none", //关闭窗口回弹效果
+                      "titleNView": {
+                          "buttons": [ //原生标题栏按钮配置,
+                              {
+                       		    "type":"none",
+                       		    "float":"right"
+                              }
+                           ]
+                       }
+                   }
+              }
+        }
+        ,{
+            "path" : "pages/index/index-children/video/video-two",
+            "style" : {
+                  "navigationBarTitleText" : "装修视频",
+                  "app-plus": {
+                      "bounce": "none", //关闭窗口回弹效果
+                      "titleNView": {
+                          "buttons": [ //原生标题栏按钮配置,
+                              {
+                       		    "type":"none",
+                       		    "float":"right"
+                              }
+                           ]
+                       }
+                   }
+              }
+        }
+    ],
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#007AFF",
+		"enablePullDownRefresh": true,
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "装信通app",
+		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#FFFFFF"
+	},
+	"tabBar": {
+		"color": "#101010",
+		"selectedColor": "#FF794A",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"list": [{
+				"iconPath": "static/tabbar/index1.png",
+				"pagePath": "pages/index/index",
+				"selectedIconPath": "static/tabbar/index2.png",
+				"text": "首页"
+			},
+			{
+				"iconPath": "./static/tabbar/company1.png",
+				"pagePath": "pages/company/company",
+				"selectedIconPath": "static/tabbar/company2.png",
+				"text": "装修公司"
+			},
+			{
+				"iconPath": "static/tabbar/img1.png",
+				"pagePath": "pages/render/render",
+				"selectedIconPath": "static/tabbar/img2.png",
+				"text": "效果图"
+			},
+			{
+				"iconPath": "static/tabbar/my1.png",
+				"pagePath": "pages/my/my",
+				"selectedIconPath": "static/tabbar/my2.png",
+				"text": "我的"
+			}
+		]
 	}
 }
