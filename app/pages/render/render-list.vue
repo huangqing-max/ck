@@ -190,28 +190,19 @@
 							_this.housetype = res.data.child
 							_this.isTitleClick.push(3)
 						}
+						let obj = {
+							page:1,
+							pageSize:10,
+							style:_this.style,
+							space:_this.space,
+							part:_this.part,
+							housetype:_this.housetype,
+						}
+						console.log('+++++++++++******************+++++++++++-------',obj)
+						_this.handleData()
 					}
 				})
-				let obj = {
-					page:1,
-					pageSize:10,
-					style:this.style,
-					space:this.space,
-					part:this.part,
-					housetype:this.housetype,
-				}
-				this.$http.Get('xgt/getlist',obj).then(res=>{
-					console.log('效果图列表',res.data.data.data[0])
-					let listData = res.data.data.data
-					let data = []
-					for (let i = 0; i < listData.length; i++) {
-						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
-						let item = JSON.parse(JSON.stringify(listData[i]))
-						item.id = this.$u.guid();
-						data.push(item)
-					}
-					this.flowList = data
-				})
+				
 			},
 			
 			handleData(){
@@ -224,9 +215,9 @@
 					part:this.part,
 					housetype:this.housetype,
 				}
-				
+				console.log('++++++++++++++++++++++-------',obj)
 				this.$http.Get('xgt/getlist',obj).then(res=>{
-					console.log('效果图列表',res.data.data.data[0])
+					console.log('效果图列表-------',res.data.data.data[0])
 					let listData = res.data.data.data
 					let data = []
 					for (let i = 0; i < listData.length; i++) {

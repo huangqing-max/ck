@@ -533,6 +533,7 @@
 				flowFourList: [],
 				designerList: [],
 				worksiteList: [],
+				isChild:false,
 				show: false
 
 			}
@@ -569,6 +570,7 @@
 			})
 
 			this.addRandomData()
+			this.handleSystemData()
 		},
 
 		onLoad() {
@@ -583,6 +585,7 @@
 			this.handleCity()
 			this.current == 0
 			this.page = 1
+			this.isChild = false
 			this.addRandomData()
 			// this.handleSwiper()
 		},
@@ -779,7 +782,7 @@
 			},
 			handlePostSystem(data) {
 				this.$http.Post('tool/agentInfo', data).then(res => {
-					console.log('成功', res)
+					console.log('成功------------------------------------------', res)
 				})
 			},
 			handleSystemData() {
@@ -801,13 +804,14 @@
 				plus.device.getInfo({
 					success: function(e) {
 						console.log('这是设备的编码', e)
-						systemData.push(res)
+						systemData.push(e)
 					},
 					fail: function(e) {}
 				});
 				let version = {
-					version:(plus.runtime.version)
+					app_version:(plus.runtime.version).split('.').join('')
 				}
+				console.log('--------------------------------------++++++++++++++++',version)
 				systemData.push(version)
 				//系统信息
 				uni.getSystemInfo({
@@ -845,8 +849,8 @@
 				let mac = {
 					mac: str
 				}
-				console.log(str)
-				systemData.push(res)
+				console.log(mac)
+				systemData.push(mac)
 			},
 
 			// 数据的获取方法
@@ -985,21 +989,23 @@
 						} else {
 							if (this.current == 0) {
 								console.log('6++++++++++++',data)
-								// _this.flowOneList = []
+								_this.flowOneList = []
 								_this.flowOneList = data
 							}
 							if (this.current == 1) {
-
-								// this.flowTwoList = []
+								if(this.isChild){
+									this.flowTwoList = []
+									this.$refs.uWaterfall1.clear()
+								}
 								this.flowTwoList = data
 								console.log('选择风格后重新赋值的案列数据', this.flowTwoList)
 							}
 							if (this.current == 2) {
-								// this.flowThreeList = []
+								this.flowThreeList = []
 								this.flowThreeList = data
 							}
 							if (this.current == 3) {
-								// this.flowFourList = []
+								this.flowFourList = []
 								this.flowFourList = data
 							}
 						}
@@ -1029,6 +1035,7 @@
 			// 案列的子选项
 			oneClick(e, i) {
 				this.ifFirstPage = true
+				this.isChild = true
 				console.log(e, i)
 				this.isActive = i
 				if (i == 0) {

@@ -123,21 +123,19 @@
 			
 			clearCache() {  
 				let _this = this
-				// uni.clearStorage()
+				uni.clearStorage()
 				console.log('----------------------_this.tokenInfo',_this.tokenInfo)
 				
-				// uni.setStorage({
-				// 	key:'token',
-				// 	data:_this.tokenInfo,
-				// 	success(res) {
-				// 		uni.switchTab({
-				// 			url:'my',
-				// 		})
-				// 	},
-				// 	fail() {
-				// 		console.log('存入token失败')
-				// 	}
-				// })
+				uni.setStorage({
+					key:'token',
+					data:_this.tokenInfo,
+					success(res) {
+						
+					},
+					fail() {
+						console.log('存入token失败')
+					}
+				})
 				_this.formatSize()
 				setTimeout(()=>{
 					uni.showToast({
@@ -199,7 +197,7 @@
 			  		}else{
 			  			console.log('当前已经是最新版本')
 						uni.showToast({
-							title: '当前已经是最新版本',  
+							title: '已是最新版本',  
 							duration: 2000  
 						}); 
 			  		}
@@ -214,7 +212,9 @@
 			      })
 			  	this.$http.File('http://manage.zx123.cn/zxt_app.apk').then(downloadResult=>{
 			  		uni.hideLoading()
+					console.log('-------------------',downloadResult)
 			  		if (downloadResult.statusCode == 200) {
+						console.log('--------++++++++++++++++++-----------')
 			  		    uni.showModal({
 			  		        title: '',
 			  		        content: '更新成功，确定现在重启吗？',
@@ -269,7 +269,7 @@
 						_this.tokenInfo = res.data
 						console.log('_this.tokenInfo',_this.tokenInfo)
 					},
-					fail() {
+					fail(err) {
 						console.log('token取出错误',err)
 						_this.button = '未登录'
 						_this.disabled = true
@@ -302,6 +302,7 @@
 				        key: 'token',
 				        success: function (res) {
 				            console.log('success');
+							
 				        }
 				    });
 					uni.switchTab({
