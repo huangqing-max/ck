@@ -210,7 +210,7 @@
 			      uni.showLoading({
 			          title: '下载更新中……'
 			      })
-			  	this.$http.File('http://manage.zx123.cn/zxt_app.apk').then(downloadResult=>{
+			  	this.$http.File('https://manage.zx123.cn/zxt_app.apk').then(downloadResult=>{
 			  		uni.hideLoading()
 					console.log('-------------------',downloadResult)
 			  		if (downloadResult.statusCode == 200) {

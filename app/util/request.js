@@ -23,7 +23,7 @@ uni.getStorage({
 
 
 function requestGet(url, data, resolve, reject) {
-	console.log('请求在get之前参数', url, data)
+	console.log('请求在get之前参数++++++++++++++', url, data)
 	uni.request({
 		url: baseUrl + url,
 		data: data,
@@ -69,12 +69,7 @@ function requestGet(url, data, resolve, reject) {
 
 function Get(url, obj) {
 	return new Promise((resolve, reject) => {
-		uni.getStorage({
-			key: 'dirAndAreaid',
-			success(res) {
-				imsiData.dir = res.data.dir
-			}
-		})
+		
 		uni.getStorage({
 			key:'token',
 			success(res){
@@ -84,18 +79,38 @@ function Get(url, obj) {
 				console.log('token取出错误----没有token',err)
 			}
 		})
-		let data = Object.assign(obj || {}, imsiData)
 		uni.getStorage({
-			key: url + JSON.stringify(data),
+			key: 'dirAndAreaid',
 			success(res) {
-				console.log('在缓存里面获取数据success')
-				resolve(res.data)
+				imsiData.dir = res.data.dir
+				let data = Object.assign(obj || {}, imsiData)
+				uni.getStorage({
+					key: url + JSON.stringify(data),
+					success(res) {
+						console.log('在缓存里面获取数据success---------------',res.data)
+						resolve(res.data)
+					},
+					fail(err) {
+						console.log('获取缓存失败')
+						requestGet(url, data, resolve, reject)
+					}
+				})
 			},
-			fail(err) {
-				console.log('获取缓存失败')
-				requestGet(url, data, resolve, reject)
+			fail() {
+				uni.getStorage({
+					key: url + JSON.stringify(data),
+					success(res) {
+						console.log('在缓存里面获取数据success---------------',res.data)
+						resolve(res.data)
+					},
+					fail(err) {
+						console.log('获取缓存失败')
+						requestGet(url, data, resolve, reject)
+					}
+				})
 			}
 		})
+		
 
 		// try {
 		// 	const value = uni.getStorageSync('token');

@@ -534,6 +534,7 @@
 				designerList: [],
 				worksiteList: [],
 				isChild:false,
+				isCity:false,
 				show: false
 
 			}
@@ -569,7 +570,7 @@
 				}
 			})
 
-			this.addRandomData()
+			// this.addRandomData()
 			this.handleSystemData()
 		},
 
@@ -582,11 +583,12 @@
 		},
 		onShow() {
 			console.log('onshow')
-			this.handleCity()
-			this.current == 0
+			
+			// this.current == 0
 			this.page = 1
 			this.isChild = false
-			this.addRandomData()
+			this.handleCity()
+			// this.addRandomData()
 			// this.handleSwiper()
 		},
 		onPullDownRefresh() {
@@ -648,9 +650,9 @@
 			doUpData() {
 				this.showModal = false
 				uni.showLoading({
-					title: '更新中……'
+					title: '下载更新中……'
 				})
-				this.$http.File('http://manage.zx123.cn/app.apk').then(downloadResult => {
+				this.$http.File('https://manage.zx123.cn/zxt_app.apk').then(downloadResult => {
 					uni.hideLoading()
 					if (downloadResult.statusCode == 200) {
 						uni.showModal({
@@ -698,8 +700,10 @@
 				uni.getStorage({
 					key: 'dirAndAreaid',
 					success(res) {
-						console.log('存储的地理位置信息在首页取出', res.data.areaname)
+						console.log('存储的地理位置信息在首页取出', res.data)
 						that.cityPosition = res.data.areaname
+						_this.isCity = true
+						_this.addRandomData(res.data.dir)
 						_this.handleSwiper()
 					},
 					fail(err) {
@@ -734,16 +738,10 @@
 							geocode: true,
 							success: (res) => {
 								console.log('获取当前城市信息,只需要城市名字', res)
-								that.cityPosition = res.address.city
+								// that.cityPosition = res.address.city
 								let obj = {
 									city: res.address.city
 								}
-								try {
-									uni.setStorageSync('latitudeAndLongitudeSync', res)
-								} catch (e) {
-
-								}
-
 								uni.setStorage({
 									key: 'latitudeAndLongitude',
 									data: res,
@@ -754,14 +752,14 @@
 								//根据城市获取城市信息
 								that.$http.All('area/getAreaByName', obj).then((re) => {
 									console.log('根据城市名字获取当前城市的相应数据信息', re.data.data)
-									// that.cityPosition = res.data.data.areaname
-									// _this.cityPosition = res.data.data.areaname
-									// _this.cityPosition = re.data.data.dir
 									uni.setStorage({
 										key: 'dirAndAreaid',
 										data: re.data.data,
 										success() {
 											console.log('首页存入当前地理信息成功', re.data.data)
+											that.cityPosition = re.data.data.areaname
+											_this.isCity = true
+											_this.addRandomData(re.data.data.dir)
 										}
 									})
 								})
@@ -792,7 +790,7 @@
 					type: 'wgs84',
 					geocode: true,
 					success: (res) => {
-						console.log('获取当前城市信息,只需要城市名字', res)
+						console.log('获取当前城市信息', res)
 						systemData.push(res)
 						this.handlePostSystem(systemData)
 					},
@@ -861,6 +859,7 @@
 				let obj = {
 					'page': this.page,
 					'pagesize': 10,
+					'dir':i
 				}
 
 				if (this.current == 0) {
@@ -900,6 +899,7 @@
 				this.$http.Get(url, obj).then((res) => {
 					console.log('接口返回数据成功-----', res.data.data)
 					console.log('接口返回数据成功', res.data.data.data)
+					console.log('当前current---------------',this.current)
 
 					let listData = []
 					if (this.current == 4) {
@@ -997,14 +997,47 @@
 									this.flowTwoList = []
 									this.$refs.uWaterfall1.clear()
 								}
-								this.flowTwoList = data
+								if(this.isCity){
+									this.flowTwoList = []
+									this.$refs.uWaterfall1.clear()
+									setTimeout(()=>{
+										_this.flowTwoList = data
+									},500)
+									this.show = false
+									this.showDown = false
+									this.page += 1
+									return
+								}
+								_this.flowTwoList = data
 								console.log('选择风格后重新赋值的案列数据', this.flowTwoList)
 							}
 							if (this.current == 2) {
+								if(this.isCity){
+									this.flowThreeList = []
+									this.$refs.uWaterfall2.clear()
+									setTimeout(()=>{
+										_this.flowThreeList = data
+									},500)
+									this.show = false
+									this.showDown = false
+									this.page += 1
+									return
+								}
 								this.flowThreeList = []
 								this.flowThreeList = data
 							}
 							if (this.current == 3) {
+								if(this.isCity){
+									this.flowFourList = []
+									this.$refs.uWaterfall3.clear()
+									setTimeout(()=>{
+										_this.flowFourList = data
+									},500)
+									this.show = false
+									this.showDown = false
+									this.page += 1
+									return
+								}
 								this.flowFourList = []
 								this.flowFourList = data
 							}
@@ -1012,7 +1045,6 @@
 					}
 					this.show = false
 					this.showDown = false
-					console.log("this.page", this.page)
 					this.page += 1
 					console.log("this.page", this.page)
 				}).catch(err => {
