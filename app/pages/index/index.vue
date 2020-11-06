@@ -542,6 +542,9 @@
 		watch: {
 			current(value) {
 				this.page = 1
+			},
+			isCity(value){
+				
 			}
 		},
 		computed: {},
@@ -703,6 +706,11 @@
 						console.log('存储的地理位置信息在首页取出', res.data)
 						that.cityPosition = res.data.areaname
 						_this.isCity = true
+						_this.$refs.uWaterfall1.clear()
+						_this.$refs.uWaterfall2.clear()
+						_this.$refs.uWaterfall3.clear()
+						_this.xueList = []
+						_this.list = []
 						_this.addRandomData(res.data.dir)
 						_this.handleSwiper()
 					},
@@ -759,6 +767,7 @@
 											console.log('首页存入当前地理信息成功', re.data.data)
 											that.cityPosition = re.data.data.areaname
 											_this.isCity = true
+											_this.handleSwiper()
 											_this.addRandomData(re.data.data.dir)
 										}
 									})
@@ -1125,31 +1134,31 @@
 				this.ifFirstPage = true
 				this.isTabActive = i
 				this.page = 1
-				
-				if (i == 0 && this.flowOneList.length != 0) {
-					return
-				}
-				if (i == 1 && this.flowTwoList.length != 0) {
-					return
-				}
-				if (i == 2 && this.flowThreeList.length != 0) {
-					return
-				}
-				if (i == 3 && this.flowFourList.length != 0) {
-					return
-				}
-				if (i == 4 && this.list.length != 0) {
-					return
-				}
-				if (i == 5 && this.xueList.length != 0) {
-					return
-				}
+				// if(!this.isCity){
+					if (i == 0 && this.flowOneList.length != 0) {
+						return
+					}
+					if (i == 1 && this.flowTwoList.length != 0) {
+						return
+					}
+					if (i == 2 && this.flowThreeList.length != 0) {
+						return
+					}
+					if (i == 3 && this.flowFourList.length != 0) {
+						return
+					}
+					if (i == 4 && this.list.length != 0) {
+						return
+					}
+					if (i == 5 && this.xueList.length != 0) {
+						return
+					}
+				// }
 				console.log('-------------',this.flowOneList)
 				console.log('-------------',this.flowTwoList)
 				console.log('-------------',this.flowThreeList)
 				console.log('-------------',this.flowFourList)
 				console.log('-------------',this.list.length)
-				this.ifFirstPage = true
 				this.show = true
 				this.current = i
 				this.addRandomData()
