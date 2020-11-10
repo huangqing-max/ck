@@ -172,7 +172,7 @@
 								title: '缓存清理完成',  
 								duration: 2000  
 							});  
-							that.formatSize();  
+							_this.formatSize();  
 						});  
 					}  
 				},
