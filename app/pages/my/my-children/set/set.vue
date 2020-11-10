@@ -155,7 +155,7 @@
 												console.log('存入token失败')
 											}
 										})
-										that.formatSize(); // 重新计算缓存  
+										_this.formatSize(); // 重新计算缓存  
 									}, function(e) {  
 										console.log(e.message)  
 									});  
