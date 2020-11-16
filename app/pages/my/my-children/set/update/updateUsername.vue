@@ -9,10 +9,14 @@
 			</view>
 		</view>
 		<view style="height: 100rpx;"></view>
+		<u-toast ref="uToast" />
 		<view class="">
-			<u-input  v-model="username" maxlength="20"  class="mobile-input" border-color="#EEEEF1" placeholder="请输入新的昵称" ></u-input>
+			<u-form :model="form" ref="uForm" :error-type="errorType">
+				<u-form-item class="mobile-label" label="新昵称" label-width="160" prop="username">
+					<u-input  v-model="form.username" maxlength="20"  class="mobile-input" border-color="#f8f8f8" placeholder="请输入新的昵称" />
+				</u-form-item>
+			</u-form>
 		</view>
-		
 		<view>
 			<view  :hair-line="false" class="down-button" @click="oKClick()">确认</view>
 		</view>
@@ -23,11 +27,27 @@
 	export default{
 		data(){
 			return{
-				username:'',
+				errorType: ['message'],
+				form:{
+					username:'',
+				},
+				rules: {
+					username: [
+						{
+							required: true, 
+							message: '请输入昵称',
+							trigger: ['change','blur'],
+						},
+					],
+					
+				}
 			}
 		},
 		created() {
 			
+		},
+		onReady() {
+			this.$refs.uForm.setRules(this.rules);
 		},
 		onShow() {
 			this.handleToken()
@@ -40,7 +60,7 @@
 					key: 'token',
 					success(res) {
 						console.log('+++++---------------+++++++++', res.data.username)
-						_this.username = res.data.username
+						_this.form.username = res.data.username
 					},
 					fail(err) {
 						console.log('token取出错误', err)
@@ -49,7 +69,33 @@
 			},
 			
 			oKClick(){
-				
+				console.log('**************', this.form.username)
+				let _this = this
+				this.$refs.uForm.validate(valid => {
+					console.log('------',valid)
+					if (valid) {
+						console.log('验证通过');
+						let data = {
+							mobile:this.form.username,
+						}
+						_this.$http.Post('',data).then(res=>{
+							console.log('修改昵称',res)
+							if(res.data.code == 0){
+								_this.$refs.uToast.show({
+									title: '修改昵称成功',
+									type: 'success',
+								})
+							}else{
+								_this.$refs.uToast.show({
+									title: res.data.msg,
+									type: 'error',
+								})
+							}
+						})
+					} else {
+						console.log('验证失败');
+					}
+				});
 			}
 		}
 		
@@ -72,9 +118,8 @@
 		line-height: 80rpx;
 	}
 	
-	.mobile-input{
-		margin:0 72rpx 60rpx 72rpx ;
-		border-bottom: 1rpx solid #EEEEF1 ;
+	.mobile-label{
+		margin:0 30rpx;
 	}
 	/* 头部 */
 	.top-title{
