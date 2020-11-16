@@ -105,7 +105,7 @@
 				key:'token',
 				success(res){
 					console.log('token成功取出',res.data)
-					console.log('token成功取出',res.data.token)
+					
 					_this.info = res.data
 					_this.isLogin = false
 					if(!res.data.token){
