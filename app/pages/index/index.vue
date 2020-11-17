@@ -520,7 +520,7 @@
 				imgData: [],
 				xueListData: [],
 				current: 0,
-				page: 1,
+				page: 2,
 				tabStyle: {
 					'font-size': '32rpx',
 				},
@@ -572,27 +572,21 @@
 					})
 				}
 			})
-
-			// this.addRandomData()
 			this.handleSystemData()
 		},
 
 		onLoad() {
 			this.update()
 			this.page = 1
-			this.ifFirstPage = false
+			// this.ifFirstPage = false
 			this.current == 0
 			console.log('onload')
 		},
 		onShow() {
 			console.log('onshow')
-			
-			// this.current == 0
 			this.page = 1
 			this.isChild = false
 			this.handleCity()
-			// this.addRandomData()
-			// this.handleSwiper()
 		},
 		onPullDownRefresh() {
 			this.handleCity()
@@ -605,10 +599,9 @@
 			console.log('onreachbotton')
 			this.showDown = true
 
-			this.ifFirstPage = false
+			// this.ifFirstPage = false
 			let _this = this
 			// 模拟数据加载
-
 			setTimeout(function() {
 				_this.addRandomData()
 				uni.stopPullDownRefresh()
@@ -619,6 +612,77 @@
 
 		},
 		methods: {
+			
+			handleAllData(i){
+				let obj = {
+					'page': 1,
+					'pagesize': 10,
+					'dir':i
+				}
+				let _this = this
+				_this.$http.Get('xgt/getlist',obj).then(res => {
+					let listData = res.data.data.data
+					let data = []
+					for (let i = 0; i < listData.length; i++) {
+						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+						let item = JSON.parse(JSON.stringify(listData[i]))
+						item.id = this.$u.guid();
+						data.push(item)
+					}
+					_this.flowOneList = data
+				})
+				_this.$http.Get('gallery/getlist',obj).then(res => {
+					let listData = res.data.data.data
+					let data = []
+					for (let i = 0; i < listData.length; i++) {
+						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+						let item = JSON.parse(JSON.stringify(listData[i]))
+						item.id = this.$u.guid();
+						data.push(item)
+					}
+					_this.flowTwoList = data
+				})
+				_this.$http.Get('designer/getList',obj).then(res => {
+					let listData = res.data.data
+					let data = []
+					for (let i = 0; i < listData.length; i++) {
+						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+						let item = JSON.parse(JSON.stringify(listData[i]))
+						// 设计师的时候名字不能超过5个字
+						if (item.company_fzr && item.company_fzr.length > 5) {
+							item.company_fzr = item.company_fzr.substring(0, 5)
+						}
+						item.id = this.$u.guid();
+						data.push(item)
+					}
+					_this.flowThreeList = data
+				})
+				_this.$http.Get('worksite/getListPage',obj).then(res => {
+					let listData = res.data.data
+					let data = []
+					for (let i = 0; i < listData.length; i++) {
+						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+						let item = JSON.parse(JSON.stringify(listData[i]))
+						// 工地的时候 title只留工地名
+						if (item.title && (item.title.indexOf(' ') > -1)) {
+							item.title = (item.title.split(' '))[0]
+						}
+						item.id = this.$u.guid();
+						data.push(item)
+					}
+					console.log('--------***********----------3',data)
+					_this.flowFourList = data
+				})
+				obj.dir_b = this.dir_b
+				_this.$http.Get('xue/getList',obj).then(res => {
+					
+					this.list = res.data.data.data
+				})
+				obj[this.tabKey] = this.tabValue
+				_this.$http.Get('zx_diray/getList', obj).then(res => {
+					this.xueList = res.data.data
+				})
+			},
 
 			handleSwiper() {
 				let _this = this
@@ -711,8 +775,9 @@
 						_this.$refs.uWaterfall3.clear()
 						_this.xueList = []
 						_this.list = []
-						_this.addRandomData(res.data.dir)
+						// _this.addRandomData(res.data.dir)
 						_this.handleSwiper()
+						_this.handleAllData(res.data.dir)
 					},
 					fail(err) {
 						console.log('取出储存的城市失败', err)
@@ -738,15 +803,12 @@
 								console.log('getDeviceInfo failed: ' + JSON.stringify(e));
 							}
 						});
-
-
 						//获取当前城市信息
 						uni.getLocation({
 							type: 'wgs84',
 							geocode: true,
 							success: (res) => {
 								console.log('获取当前城市信息,只需要城市名字', res)
-								// that.cityPosition = res.address.city
 								let obj = {
 									city: res.address.city
 								}
@@ -768,7 +830,8 @@
 											that.cityPosition = re.data.data.areaname
 											_this.isCity = true
 											_this.handleSwiper()
-											_this.addRandomData(re.data.data.dir)
+											// _this.addRandomData(re.data.data.dir)
+											_this.handleAllData(re.data.data.dir)
 										}
 									})
 								})
@@ -815,11 +878,11 @@
 					},
 					fail: function(e) {}
 				});
-				let version = {
+				let app_version = {
 					app_version:(plus.runtime.version).split('.').join('')
 				}
-				console.log('--------------------------------------++++++++++++++++',version)
-				systemData.push(version)
+				console.log('--------------------------------------++++++++++++++++',app_version)
+				systemData.push(app_version)
 				//系统信息
 				uni.getSystemInfo({
 					success: function(res) {
@@ -918,11 +981,11 @@
 						} else {
 							this.xueListShow = false
 						}
-						if (!this.ifFirstPage) {
-							this.list = this.list.concat(res.data.data.data)
-						} else {
-							this.list = res.data.data.data
-						}
+						// if (!this.ifFirstPage) {
+						this.list = this.list.concat(res.data.data.data)
+						// } else {
+						// 	this.list = res.data.data.data
+						// }
 						this.show = false
 						this.page += 1
 						return
@@ -934,11 +997,11 @@
 						} else {
 							this.xueListShow = false
 						}
-						if (!this.ifFirstPage) {
-							this.xueList = this.xueList.concat(res.data.data.data)
-						} else {
-							this.xueList = res.data.data.data
-						}
+						// if (!this.ifFirstPage) {
+						this.xueList = this.xueList.concat(res.data.data.data)
+						// } else {
+						// 	this.xueList = res.data.data.data
+						// }
 						this.show = false
 						this.page += 1
 						return
@@ -980,7 +1043,7 @@
 							data.push(item)
 						}
 						console.log('接口里面的page', this.page)
-						if (!this.ifFirstPage) {
+						// if (!this.ifFirstPage) {
 							if (this.current == 0) {
 								_this.flowOneList = _this.flowOneList.concat(data)
 								// console.log('1推荐的图片', this.flowOneList)
@@ -995,67 +1058,67 @@
 							if (this.current == 3) {
 								this.flowFourList = this.flowFourList.concat(data)
 							}
-						} else {
-							if (this.current == 0) {
-								console.log('6++++++++++++',data)
-								_this.flowOneList = []
-								_this.flowOneList = data
-							}
-							if (this.current == 1) {
-								if(this.isChild){
-									this.flowTwoList = []
-									this.$refs.uWaterfall1.clear()
-								}
-								if(this.isCity){
-									this.flowTwoList = []
-									this.$refs.uWaterfall1.clear()
-									setTimeout(()=>{
-										_this.flowTwoList = data
-									},500)
-									this.show = false
-									this.showDown = false
-									this.page += 1
-									return
-								}
-								_this.flowTwoList = data
-								console.log('选择风格后重新赋值的案列数据', this.flowTwoList)
-							}
-							if (this.current == 2) {
-								if(this.isCity){
-									this.flowThreeList = []
-									this.$refs.uWaterfall2.clear()
-									setTimeout(()=>{
-										_this.flowThreeList = data
-									},500)
-									this.show = false
-									this.showDown = false
-									this.page += 1
-									return
-								}
-								this.flowThreeList = []
-								this.flowThreeList = data
-							}
-							if (this.current == 3) {
-								if(this.isCity){
-									this.flowFourList = []
-									this.$refs.uWaterfall3.clear()
-									setTimeout(()=>{
-										_this.flowFourList = data
-									},500)
-									this.show = false
-									this.showDown = false
-									this.page += 1
-									return
-								}
-								this.flowFourList = []
-								this.flowFourList = data
-							}
-						}
+						// } else {
+							// if (this.current == 0) {
+							// 	console.log('6++++++++++++',data)
+							// 	_this.flowOneList = []
+							// 	_this.flowOneList = data
+							// }
+							// if (this.current == 1) {
+							// 	if(this.isChild){
+							// 		this.flowTwoList = []
+							// 		this.$refs.uWaterfall1.clear()
+							// 	}
+							// 	if(this.isCity){
+							// 		this.flowTwoList = []
+							// 		this.$refs.uWaterfall1.clear()
+							// 		setTimeout(()=>{
+							// 			_this.flowTwoList = data
+							// 		},500)
+							// 		this.show = false
+							// 		this.showDown = false
+							// 		this.page += 1
+							// 		return
+							// 	}
+							// 	_this.flowTwoList = data
+							// 	console.log('选择风格后重新赋值的案列数据', this.flowTwoList)
+							// }
+							// if (this.current == 2) {
+							// 	if(this.isCity){
+							// 		this.flowThreeList = []
+							// 		this.$refs.uWaterfall2.clear()
+							// 		setTimeout(()=>{
+							// 			_this.flowThreeList = data
+							// 		},500)
+							// 		this.show = false
+							// 		this.showDown = false
+							// 		this.page += 1
+							// 		return
+							// 	}
+							// 	this.flowThreeList = []
+							// 	this.flowThreeList = data
+							// }
+							// if (this.current == 3) {
+							// 	if(this.isCity){
+							// 		this.flowFourList = []
+							// 		this.$refs.uWaterfall3.clear()
+							// 		setTimeout(()=>{
+							// 			_this.flowFourList = data
+							// 		},500)
+							// 		this.show = false
+							// 		this.showDown = false
+							// 		this.page += 1
+							// 		return
+							// 	}
+							// 	this.flowFourList = []
+							// 	this.flowFourList = data
+							// }
+						// }
 					}
 					this.show = false
 					this.showDown = false
 					this.page += 1
-					console.log("this.page", this.page)
+					console.log("----------------------this.page-------------------", this.page)
 				}).catch(err => {
 					console.log(err)
 				})
@@ -1118,14 +1181,14 @@
 			hangleXue(obj) {
 				this.$http.Get('zx_diray/getList', obj).then(res => {
 					console.log('装修日记的接口返回数据', res.data.data)
-					if (!this.ifFirstPage) {
+					// if (!this.ifFirstPage) {
 						this.show = false
-						return
+						// return
 						this.xueList = this.xueList.concat(res.data.data)
-					} else {
-						this.xueList = res.data.data
-						this.show = false
-					}
+					// } else {
+					// 	this.xueList = res.data.data
+					// 	this.show = false
+					// }
 				})
 			},
 			// title导航
@@ -1134,34 +1197,34 @@
 				this.ifFirstPage = true
 				this.isTabActive = i
 				this.page = 1
-				// if(!this.isCity){
-					if (i == 0 && this.flowOneList.length != 0) {
-						return
-					}
-					if (i == 1 && this.flowTwoList.length != 0) {
-						return
-					}
-					if (i == 2 && this.flowThreeList.length != 0) {
-						return
-					}
-					if (i == 3 && this.flowFourList.length != 0) {
-						return
-					}
-					if (i == 4 && this.list.length != 0) {
-						return
-					}
-					if (i == 5 && this.xueList.length != 0) {
-						return
-					}
-				// }
-				console.log('-------------',this.flowOneList)
-				console.log('-------------',this.flowTwoList)
-				console.log('-------------',this.flowThreeList)
-				console.log('-------------',this.flowFourList)
-				console.log('-------------',this.list.length)
-				this.show = true
+				// // if(!this.isCity){
+				// 	if (i == 0 && this.flowOneList.length != 0) {
+				// 		return
+				// 	}
+				// 	if (i == 1 && this.flowTwoList.length != 0) {
+				// 		return
+				// 	}
+				// 	if (i == 2 && this.flowThreeList.length != 0) {
+				// 		return
+				// 	}
+				// 	if (i == 3 && this.flowFourList.length != 0) {
+				// 		return
+				// 	}
+				// 	if (i == 4 && this.list.length != 0) {
+				// 		return
+				// 	}
+				// 	if (i == 5 && this.xueList.length != 0) {
+				// 		return
+				// 	}
+				// // }
+				// console.log('-------------',this.flowOneList)
+				// console.log('-------------',this.flowTwoList)
+				// console.log('-------------',this.flowThreeList)
+				// console.log('-------------',this.flowFourList)
+				// console.log('-------------',this.list.length)
+				// this.show = true
 				this.current = i
-				this.addRandomData()
+				// this.addRandomData()
 			},
 
 
@@ -1189,7 +1252,10 @@
 	}
 </script>
 
-<style scoped>
+<style  scoped>
+	body{
+		width: 750rpx;
+	}
 	/* 跟新提示弹窗 */
 	.slot-content {
 		position: relative;
@@ -1246,7 +1312,7 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: $bgColor;
+		/* background: $bgColor; */
 		z-index: 999;
 		transition: all .5s;
 		display: flex;
