@@ -78,7 +78,7 @@
 						let data = {
 							mobile:this.form.username,
 						}
-						_this.$http.Post('',data).then(res=>{
+						_this.$http.MyPost('',data).then(res=>{
 							console.log('修改昵称',res)
 							if(res.data.code == 0){
 								_this.$refs.uToast.show({

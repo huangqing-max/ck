@@ -26,7 +26,7 @@
 		</view>
 		
 		<view>
-			<view  :hair-line="false" class="down-button" @click="oKClick()">确认</view>
+			<u-button :disabled="disabled"  :hair-line="false" class="down-button" @click="oKClick()">确认</u-button>
 		</view>
 	</view>
 </template>
@@ -39,6 +39,7 @@
 					mobile:'',
 					code:'',
 				},
+				disabled:true,
 				show: true,
 				count: '',
 				errorType: ['message'],
@@ -47,7 +48,7 @@
 						{
 							required: true, 
 							message: '请输入手机号',
-							trigger: ['change','blur'],
+							trigger: ['change'],
 						},
 						{
 							// 自定义验证函数，见上说明
@@ -58,7 +59,7 @@
 							},
 							message: '手机号码不正确',
 							// 触发器可以同时用blur和change
-							trigger: ['change','blur'],
+							trigger: ['change'],
 						}
 					],
 				},
@@ -67,7 +68,7 @@
 						{
 							required: true, 
 							message: '请输入手机号',
-							trigger: ['change','blur'],
+							trigger: ['change'],
 						},
 						{
 							// 自定义验证函数，见上说明
@@ -78,14 +79,14 @@
 							},
 							message: '手机号码不正确',
 							// 触发器可以同时用blur和change
-							trigger: ['change','blur'],
+							trigger: ['change'],
 						}
 					],
 					code: [
 						{
 							required: true,
 							message: '请输入验证码',
-							trigger: ['blur', 'change']
+							trigger: ['change']
 						}
 					]
 				}
@@ -95,7 +96,7 @@
 			
 		},
 		onReady() {
-			// this.$refs.uForm.setRules(this.rules1);
+			this.$refs.uForm.setRules(this.rules1);
 		},
 		onShow() {
 			this.handleToken()
@@ -105,8 +106,9 @@
 			codeClick(){
 				let _this = this
 				this.$refs.uForm.validate(valid => {
+					console.log(';;;;;',valid)
 					if (valid) {
-						// _this.$refs.uForm.setRules(_this.rules);
+						_this.$refs.uForm.setRules(_this.rules);
 						console.log('验证通过');
 						//验证码的倒计时
 						const TIME_COUNT = 60;
@@ -127,13 +129,14 @@
 							mobile:_this.form.mobile,
 							imsi:_this.imsi
 						}
-						_this.$http.Post('login/getCode',data).then(res=>{
-							console.log('登录页面的验证码获取',res)
+						_this.$http.Post('member/getCode',data).then(res=>{
+							console.log('修改手机的验证码获取',res)
 							if(res.data.code == 0){
 								_this.$refs.uToast.show({
 									title: '获取验证码成功',
 									type: 'success',
 								})
+								_this.disabled = false
 							}else{
 								_this.$refs.uToast.show({
 									title: res.data.msg,
@@ -175,15 +178,20 @@
 					if (valid) {
 						console.log('验证通过');
 						let data = {
-							mobile:this.form.mobile,
-							code:this.form.code,
+							// mobile:this.form.mobile,
+							captcha:this.form.code,
+							mobile:this.form.mobile
 						}
-						_this.$http.Post('',data).then(res=>{
+						console.log('---------------',data);
+						_this.$http.MyPost('member/updateMobile',data).then(res=>{
 							console.log('修改手机号',res)
 							if(res.data.code == 0){
 								_this.$refs.uToast.show({
 									title: '修改手机号成功',
 									type: 'success',
+								})
+								uni.navigateTo({
+									url:'../set'
 								})
 							}else{
 								_this.$refs.uToast.show({
