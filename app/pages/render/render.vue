@@ -220,7 +220,7 @@
 				flowOneList: [],
 				imgList: [],
 				imgDList: [],
-				page: 0,
+				page: 1,
 				isFirst: true,
 				filist: [],
 				tabKey: '',
@@ -259,7 +259,7 @@
 			}, 1500)
 			this.page = 0
 			this.isStyleActive == 0
-			this.addRandomData()
+			this.handleAllData()
 		},
 		created() {
 			let that = this
@@ -281,9 +281,51 @@
 		onPullDownRefresh() {
 			this.isFirst = false
 			this.page = 0
-			this.addRandomData();
+			this.handleAllData();
 		},
 		methods: {
+			
+			handleAllData(){
+				let obj = {
+					'page': 1,
+					'pagesize': 10,
+				}
+				let _this = this
+				_this.$http.Get('pano/getlist', obj).then(res => {
+					_this.imgDList = res.data.data.data
+				})
+				_this.$http.Get('gallery/getlist', obj).then(res => {
+					_this.imgList = res.data.data.data
+				})
+				
+				obj.kind = 1
+				_this.$http.Get('xgt/xgtRecode', obj).then(res => {
+					let data = res.data.data.data
+					let list = []
+					for (let i = 0; i < data.length; i++) {
+						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+						let item = JSON.parse(JSON.stringify(data[i]))
+						item.id = _this.$u.guid()
+						list.push(item);
+					}
+					_this.flowList = list
+				})
+				
+				obj.kind = 2
+				_this.$http.Get('xgt/xgtRecode', obj).then(res => {
+					let data = res.data.data.data
+					let list = []
+					for (let i = 0; i < data.length; i++) {
+						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+						let item = JSON.parse(JSON.stringify(data[i]))
+						item.id = _this.$u.guid()
+						list.push(item);
+					}
+					_this.flowOneList = list
+				})
+				
+				
+			},
 
 			urlClick(url) {
 				uni.setStorage({
@@ -338,32 +380,31 @@
 			//tab标签的点击
 			styleClick(e, i) {
 				this.isStyleActive = i
-				this.page = 0
-				if (i == 0 && this.flowList.length != 0) {
-					return
-				}
-				if (i == 1 && this.flowOneList.length != 0) {
-					return
-				}
-				if (i == 2 && this.imgList.length != 0) {
-					return
-				}
-				if (i == 3 && this.imgDList.length != 0) {
-					return
-				}
+				this.page = 1
+				// if (i == 0 && this.flowList.length != 0) {
+				// 	return
+				// }
+				// if (i == 1 && this.flowOneList.length != 0) {
+				// 	return
+				// }
+				// if (i == 2 && this.imgList.length != 0) {
+				// 	return
+				// }
+				// if (i == 3 && this.imgDList.length != 0) {
+				// 	return
+				// }
 				
-				this.isFirst = true
-				this.page = 0
-				this.show = true
-				if (i == 0) {
-					this.flowList = []
-					this.$refs.uWaterfall.clear()
-				}
-				if (i == 1) {
-					this.flowOneList = []
-					this.$refs.uWaterfall1.clear()
-				}
-				this.addRandomData()
+				// this.isFirst = true
+				// this.show = true
+				// if (i == 0) {
+				// 	this.flowList = []
+				// 	this.$refs.uWaterfall.clear()
+				// }
+				// if (i == 1) {
+				// 	this.flowOneList = []
+				// 	this.$refs.uWaterfall1.clear()
+				// }
+				// this.addRandomData()
 			},
 			addRandomData() {
 				++this.page
@@ -394,11 +435,11 @@
 
 					if (this.isStyleActive == 3) {
 						console.log('3d-----美图数据', res.data.data.data)
-						if (!this.isFirst) {
+						// if (!this.isFirst) {
 							this.imgDList = this.imgDList.concat(data)
-						} else {
-							this.imgDList = data
-						}
+						// } else {
+						// 	this.imgDList = data
+						// }
 						this.showDown = false
 						let _this = this
 
@@ -409,11 +450,11 @@
 					}
 					if (this.isStyleActive == 2) {
 						console.log('效果图案列----美图数据', res.data.data.data)
-						if (!this.isFirst) {
+						// if (!this.isFirst) {
 							this.imgList = this.imgList.concat(data)
-						} else {
-							this.imgList = data
-						}
+						// } else {
+						// 	this.imgList = data
+						// }
 						this.showDown = false
 						let _this = this
 						setTimeout(function() {
@@ -436,19 +477,19 @@
 					console.log('处理后的page', this.page)
 					if (this.isStyleActive == 0) {
 						console.log('最新美图------数据')
-						if (!this.isFirst) {
+						// if (!this.isFirst) {
 							this.flowList = this.flowList.concat(list)
-						} else {
-							this.flowList = list
-						}
+						// } else {
+						// 	this.flowList = list
+						// }
 					}
 					if (this.isStyleActive == 1) {
 						console.log('猜你喜欢---------数据', res.data.data.data)
-						if (!this.isFirst) {
+						// if (!this.isFirst) {
 							this.flowOneList = this.flowOneList.concat(list)
-						} else {
-							this.flowOneList = list
-						}
+						// } else {
+						// 	this.flowOneList = list
+						// }
 					}
 					this.showDown = false
 					let _this = this
@@ -459,8 +500,6 @@
 						uni.stopPullDownRefresh()
 					}, 1500)
 				})
-
-
 			},
 			iconClick(e, i) {
 				this.isColor = 1
