@@ -47,7 +47,9 @@
 		},
 		watch:{},
 		computed:{},
-		created(){},
+		created(){
+			
+		},
 		mounted(){},
 		onShow() {
 			this.handleData()
@@ -55,24 +57,16 @@
 		methods:{
 			
 			handleData(){
-				
-				// this.$http.MyGet('my_center/getUserInfo').then(res=>{
-				// 	console.log('个人中心首页获取是否已经完善了身份证信息',res.data)
-				// 	if(res.data.data.isperfect!=1){
-				// 		uni.navigateTo({
-				// 			url:'../userinfo/userinfo'
-				// 		})
-				// 	}
-				// })
-				
+				console.log('/////////////////')
 				this.$http.MyGet('my_center/contractList').then(res=>{
-					console.log('合同列表',res.data)
+					console.log('合同列表',res.data.data)
 					this.data = res.data.data
 				})
 			},
 			
 			// 点击列表跳转详情页面
 			biddingClick(id){
+				console.log('==============',id)
 				uni.setStorage({
 					key:'contractListContentid',
 					data:id,

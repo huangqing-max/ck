@@ -12,7 +12,7 @@
 		
 		<view style="height: 100rpx;"></view>
 		
-		
+		<u-toast ref="uToast" />
 		
 		<view class="content">
 			<view  >
@@ -24,13 +24,12 @@
 				<view class="content-view">照&emsp;片：</view>
 				
 				<u-upload  :custom-btn="true"   :action="action" :file-list="imgs"  @on-change="onChange" @on-remove="onRemove">
-					<view slot="addBtn" class="customBtn" hover-class="slot-btn__hover" hover-stay-time="150">
-						添加照片
+					<view slot="addBtn" style="display: flex;" hover-class="slot-btn__hover" hover-stay-time="150">
+						<view  :hair-line="false" class="customBtn" >添加照片</view>
+						<view  :hair-line="false" @click.stop="buttonClick()" class="customBtn" >提交</view>
 					</view>
 				</u-upload>
-				
 			</view>
-			
 		</view>
 	</view>
 </template>
@@ -59,11 +58,20 @@
 			},
 			handleImgs(lists){
 				let data = []
+				console.log('**************',lists)
 				for (var i = 0; i < lists.length; i++) {
-					data.push(lists[i].response.data.file_path)
+					if(lists[i].response){
+						data.push(lists[i].response.data.file_path)
+					}
+				}
+				console.log('+++++++++++++++++++',this.imgs)
+				for (var i = 0; i < this.imgs.length; i++) {
+					if(this.imgs[i].img){
+						data.push(this.imgs[i].img)
+					}
 				}
 				this.fileList = data
-				console.log(data)
+				console.log('+++++++++++++++++++',this.fileList)
 			},
 			// 删除图片的回调
 			onRemove(index, lists, name){
@@ -75,6 +83,7 @@
 				uni.getStorage({
 					key:'contractListContentid',
 					success(res){
+						console.log('--------',res)
 						let obj = {
 							id:res.data
 						}
@@ -83,30 +92,35 @@
 							_this.info = res.data.data
 							_this.imgs = JSON.parse(JSON.stringify(res.data.data.imgs).replace(/img_path/g,'url'))
 						})
-						
 					}
 				})
 			},
 			
-			
 			buttonClick(){
-				
-				let obj = {
-					imgs:this.fileList
+				let img = {
+					imgs:this.fileList,
+					id:this.info.id
 				}
-				
-				this.$http.Post('my_center/editContract',obj).then(res=>{
+				console.log('===================',img)
+				this.$http.MyPost('my_center/editContract',img).then(res=>{
 					console.log('成功',res)
-					this.$refs.uToast.show({
-						title: '编辑成功',
-						position:'top',
-						type: 'success',
-					})
-					setTimeout(function(){
-						uni.switchTab({
-							url:'../../my'
+					if(res.data.code == 0){
+						this.$refs.uToast.show({
+							title: '编辑成功',
+							position:'top',
+							type: 'success',
 						})
-					},1000)
+						setTimeout(function(){
+							uni.switchTab({
+								url:'../../my'
+							})
+						},1000)
+					}else{
+						this.$refs.uToast.show({
+							title: res.data.msg,
+							type: 'warning',
+						})
+					}
 					
 				}).catch(err=>{
 					console.log('错误')
@@ -123,9 +137,24 @@
 </script>
 
 <style scoped>
+	.down-button {
+		position: fixed;
+		bottom: 80rpx;
+		width: 400rpx;
+		text-align: center;
+		background-color: rgba(255, 103, 74, 100);
+		font-family: PingFangSC-regular;
+		border-radius: 16rpx;
+		color: rgba(255, 255, 255, 100);
+		font-size: 28rpx;
+		margin: 30rpx 175rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+	}
 	
 	.customBtn{
 		margin: 52rpx 0;
+		margin-right: 20rpx;
 		width: 220rpx;
 		height: 94rpx;
 		border-radius: 16rpx;
