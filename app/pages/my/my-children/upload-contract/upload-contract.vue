@@ -23,7 +23,8 @@
 					<view class="formLabel" >上传合同照片</view>
 					
 					<view >
-						<u-upload ref="uUpload" width="260" height="170" :action="action" :file-list="fileList" @on-change="onChange" @on-remove="onRemove" ></u-upload>
+						<u-upload ref="uUpload" width="260" height="170" :action="action" :file-list="fileList"
+						 @on-change="onChange" @on-remove="onRemove" ></u-upload>
 					</view>
 					<view class="formError" v-if="imgError" >请选择图片</view>
 				</view>
@@ -84,7 +85,7 @@
 					data.push(lists[i].response.data.file_path)
 				}
 				this.imgs = data
-				console.log(data)
+				console.log('/////////////////',data)
 			},
 			// 删除图片的回调
 			onRemove(index, lists, name){
