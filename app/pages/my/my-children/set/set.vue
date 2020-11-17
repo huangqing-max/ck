@@ -140,21 +140,26 @@
 		},
 		methods: {
 			handleUrl(i){
-				console.log(i)
-				if(i=='phone'){
+				if(this.disabled){
 					uni.navigateTo({
-						url:'update/updatePhone'
+						url:'../../login'
 					})
-				}
-				if(i=='pwd'){
-					uni.navigateTo({
-						url:'update/updatePwd'
-					})
-				}
-				if(i=='username'){
-					uni.navigateTo({
-						url:'update/updateUsername'
-					})
+				}else{
+					if(i=='phone'){
+						uni.navigateTo({
+							url:'update/updatePhone'
+						})
+					}
+					if(i=='pwd'){
+						uni.navigateTo({
+							url:'update/updatePwd'
+						})
+					}
+					if(i=='username'){
+						uni.navigateTo({
+							url:'update/updateUsername'
+						})
+					}
 				}
 			},
 			
