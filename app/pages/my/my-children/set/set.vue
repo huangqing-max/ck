@@ -139,6 +139,8 @@
 			this.handleNoLogin()
 		},
 		methods: {
+			
+			
 			handleUrl(i){
 				if(this.disabled){
 					uni.navigateTo({
@@ -309,10 +311,20 @@
 							console.log('token取出错误')
 							_this.button = '未登录'
 							_this.disabled = true
+						}else{
+							_this.token = res.data.token
+							_this.tokenInfo = res.data
+							console.log('_this.tokenInfo', _this.tokenInfo)
+							if(res.data.contentid){
+								let data = {
+									contentid:res.data.contentid
+								}
+								_this.$http.MyGet('member/getUserInfo',data).then(res=>{
+									console.log('*********************-----当前用户个人信息----------------++++++++++++',res.data)
+								})
+							}
 						}
-						_this.token = res.data.token
-						_this.tokenInfo = res.data
-						console.log('_this.tokenInfo', _this.tokenInfo)
+						
 					},
 					fail(err) {
 						console.log('token取出错误', err)
