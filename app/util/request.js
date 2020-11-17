@@ -62,9 +62,6 @@ function requestGet(url, data, resolve, reject) {
 			reject(err);
 		}
 	});
-
-
-
 }
 
 function Get(url, obj) {
@@ -111,29 +108,6 @@ function Get(url, obj) {
 			}
 		})
 		
-
-		// try {
-		// 	const value = uni.getStorageSync('token');
-		// 	if (value.length > 0) {
-		// 		token = JSON.parse(value).token
-		// 	}
-		// 	let data = Object.assign(obj || {}, imsiData)
-		// 	console.log('请求参数在缓存之前输出参数', obj, url + JSON.stringify(data))
-		// 	uni.getStorage({
-		// 		key: url + JSON.stringify(data),
-		// 		success(res) {
-		// 			console.log('在缓存里面获取数据success')
-		// 			resolve(res.data)
-		// 		},
-		// 		fail(err) {
-		// 			console.log('获取缓存失败')
-		// 			requestGet(url, data, resolve, reject)
-		// 		}
-		// 	})
-		// } catch (e) {
-		// 	console.log('request请求页面没有token')
-		// }
-
 	})
 }
 
@@ -221,30 +195,6 @@ function MyGet(url, obj) {
 				console.log('token取出错误----没有token',err)
 			}
 		})
-
-		// try {
-		// 	const value = uni.getStorageSync('token');
-		// 	if (value.length > 0) {
-		// 		token = JSON.parse(value).token
-		// 	}
-		// 	let data = Object.assign(obj || {}, imsiData)
-		// 	uni.request({
-		// 		url: baseUrl + url,
-		// 		data: data,
-		// 		method: 'GET',
-		// 		header: {
-		// 			'Authorization': 'Bearer ' + token
-		// 		},
-		// 		success: (res) => {
-		// 			resolve(res);
-		// 		},
-		// 		fail(err) {
-		// 			reject(err)
-		// 		}
-		// 	});
-		// } catch (e) {
-		// 	console.log('request请求页面没有token')
-		// }
 	})
 }
 /**
@@ -254,33 +204,29 @@ function MyGet(url, obj) {
  */
 function Post(url, obj) {
 	return new Promise((resolve, reject) => {
-		try {
-			const value = uni.getStorageSync('token');
-			if (value.length > 0) {
-				token = JSON.parse(value).token
-			}
-
-			console.log('调用一次参数', imsiData, obj)
+			uni.getStorage({
+				key: 'token',
+				success(res) {
+					console.log('token在request的post请求调用成功取出', res.data.token)
+					token = res.data.token
+				}
+			})
 			uni.request({
 				url: baseUrl + url,
 				data: Object.assign(obj || {}, imsiData),
 				method: 'POST',
 				header: {
-					'Content-Type': 'application/json;charset=UTF-8',
 					'authorization': 'Bearer ' + token
 				},
 				success: (res) => {
-					console.log(res)
+					console.log('++++++++++++',res)
 					resolve(res);
-
 				},
 				fail(err) {
+					console.log('-----------',err)
 					reject(err)
 				}
 			});
-		} catch (e) {
-			console.log('request请求页面没有token')
-		}
 	})
 }
 
