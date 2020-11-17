@@ -107,11 +107,11 @@
 		},
 		methods:{
 			handleData(){
+				let _this = this
 				this.$http.MyGet('my_center/getUserDataStatus').then(res=>{
 					console.log('个人中心信息',res.data)
-					
 					if(res.data.code==0){
-						this.info = res.data.data
+						_this.info = res.data.data
 					}
 				})
 			},

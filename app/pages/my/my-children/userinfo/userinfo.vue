@@ -30,13 +30,17 @@
 					<u-row>
 						<u-col span="6">
 							<view class="formUpload">
-								<u-upload width="260" height="170" upload-text="上传身份证正面" @on-choose-complete="Err1" max-count="1" :action="action" :file-list="fileList" @on-change="onChange1" @on-remove="onRemove1" ></u-upload>
+								<u-upload width="260" height="170" upload-text="上传身份证正面" 
+								@on-choose-complete="Err1" max-count="1" :action="action" 
+								:file-list="fileList" @on-change="onChange1" @on-remove="onRemove1" ></u-upload>
 							</view>
 							<view class="formError" v-if="sidError_1" >请选择身份证正面</view>
 						</u-col>
 						<u-col span="6">
 							<view class="formUpload">
-								<u-upload width="260" height="170" upload-text="上传身份证背面" @on-choose-complete="Err2" max-count="1" :action="action" :file-list="fileList" @on-change="onChange2" @on-remove="onRemove2" ></u-upload>
+								<u-upload width="260" height="170" upload-text="上传身份证背面" 
+								@on-choose-complete="Err2" max-count="1" :action="action" 
+								:file-list="fileList2" @on-change="onChange2" @on-remove="onRemove2" ></u-upload>
 							</view>
 							<view class="formError" v-if="sidError_2" >请选择身份证背面</view>
 						</u-col>
@@ -63,6 +67,7 @@
 			return{
 				action:'https://mapi.zx123.cn/upload/uploadthumb',
 				fileList:[],
+				fileList2:[],
 				name:'',
 				sid:'',
 				sid_1:'',
@@ -96,19 +101,28 @@
 			}
 		},
 		computed:{},
-		created(){},
+		created(){
+			this.handleData()
+		},
 		mounted(){},
 		onShow() {
-			this.handleData()
+			
 		},
 		methods:{
 			
 			handleData(){
+				let _this = this
 				this.$http.MyGet('my_center/getUserDataStatus').then(res=>{
 					console.log('个人信息',res.data)
 					if(res.data.code==0){
 						this.name = res.data.data.name
 						this.sid = res.data.data.sid
+						this.sid_1 = res.data.data.sid_1
+						this.sid_2 = res.data.data.sid_2
+						_this.fileList.push(JSON.parse(JSON.stringify({url:'https:'+ res.data.data.sid_1})))
+						_this.fileList2.push(JSON.parse(JSON.stringify({url:'https:'+ res.data.data.sid_2})))
+						console.log('----',_this.fileList)
+						console.log('--++++--',_this.fileList2)
 					}
 				})
 			},
