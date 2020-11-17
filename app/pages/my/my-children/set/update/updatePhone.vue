@@ -17,7 +17,7 @@
 				</u-form-item>
 				<u-form-item class="mobile-label" label="验证码:" label-width="160" prop="code">
 					<u-input right="true" :clearable="false" v-model="form.code" maxlength="20"  class="mobile-input" border-color="#f8f8f8" placeholder="请输入验证码" />
-					<view v-if="show" class="code-button" v-slot="right" @click="codeClick()">
+					<view v-if="show" class="code-button"  @click="codeClick()">
 						获取验证码
 					</view>
 					<view v-if="!show" class="code-button"  >{{count}}{{'&emsp;S'}}</view>
@@ -95,8 +95,7 @@
 			
 		},
 		onReady() {
-			
-			this.$refs.uForm.setRules(this.rules1);
+			// this.$refs.uForm.setRules(this.rules1);
 		},
 		onShow() {
 			this.handleToken()
@@ -107,7 +106,7 @@
 				let _this = this
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
-						_this.$refs.uForm.setRules(_this.rules);
+						// _this.$refs.uForm.setRules(_this.rules);
 						console.log('验证通过');
 						//验证码的倒计时
 						const TIME_COUNT = 60;
@@ -158,7 +157,7 @@
 					success(res) {
 						console.log('+++++---------------+++++++++', res.data.phone)
 						if(res.data.mobile){
-							_this.mobile = res.data.phone
+							_this.form.mobile = res.data.phone || ''
 						}
 					},
 					fail(err) {
