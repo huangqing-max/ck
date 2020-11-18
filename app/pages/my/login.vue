@@ -129,6 +129,11 @@
 			},
 			weixinLogin(){
 				let _this = this
+				uni.showToast({
+				    title: '正在登录中...',
+					icon:'none',
+					duration:5000
+				});
 				// uni.getProvider（）获取服务商信息判断手机端是否安装了app
 				uni.getProvider({
 					// oauth  代表授权登录
@@ -138,14 +143,10 @@
 						//支持微信、qq和微博等
 						if (res.provider.indexOf('weixin')>-1) {
 							console.log('----------------********')
-							// uni.showModal({
-							// 	title:'登录中...'
-							// })
 							uni.login({
 								provider: 'weixin',
 								success: function(loginRes) {
 									console.log('-------获取openid(unionid)-----',loginRes);
-									// console.log(JSON.stringify(loginRes));
 									// 获取用户信息
 									uni.request({
 									    url: 'https://api.weixin.qq.com/sns/userinfo', 
@@ -172,14 +173,12 @@
 				_this.$http.Post('login/wxlogin',infoRes).then(res=>{
 					console.log('登录成功',res.data)
 					if(res.data.code==0){
-						this.$refs.uToast.show({
-							title:'登录成功',
-							type: 'success',
-						})
+						
 						uni.setStorage({
 							key:'token',
 							data:res.data.data,
-							success(res) {
+							success(res) {							
+								uni.hideToast();
 								uni.switchTab({
 									url:'my',
 								})
@@ -188,14 +187,6 @@
 								console.log('存入token失败')
 							}
 						})
-						// try {
-						//     uni.setStorageSync('token', JSON.stringify(res.data.data));
-						// 	uni.switchTab({
-						// 		url:'my',
-						// 	})
-						// } catch (e) {
-						//     console.log('存入token失败')
-						// }
 					}
 					if(res.data.code==1){
 						this.$refs.uToast.show({
@@ -204,19 +195,6 @@
 						})
 					}
 				})
-				//这是设备的编码
-				// plus.device.getInfo({
-				// 	success: function(e) {
-				// 		console.log('这是设备的编码', e)
-				// 		let d = []
-				// 		d.push(e)
-				// 		d.push(infoRes)
-						
-				// 	},
-				// 	fail: function(e) {
-				// 	}
-				// });
-				
 			},
 			//登录按钮点击
 			loginClick(){
@@ -234,7 +212,6 @@
 					}else{
 						this.mobileError = ''
 					}
-					
 					var TEL_CODE = /^\d{4}$/
 					if(!this.code){
 						this.codeError = "请输入验证码"
@@ -251,31 +228,14 @@
 					data.captcha = this.code
 					console.log('这是验证码登录')
 				}else{
-					// 验证账号
-					// let ACCOUNT = /^[a-zA-Z0-9_\x7f-\xff]{3,20}$/
 					if(this.username.length==0){
 						this.usernameError = "请输入账号"
 						return
 					}
-					// if(!ACCOUNT.test(this.username)){
-					// 	this.usernameError =	"你输入的账号不符合规范，请重新输入"
-					// 	return
-					// }else{
-					// 	this.usernameError = ''
-					// }
-					// 验证密码 至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符：
-					// var TEL_PWD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/
 					if(this.password.length==0){
 						this.pwdError = "请输入密码"
 						return
 					}
-					// if(!TEL_PWD.test(this.password)){
-					// 	this.pwdError =	"你输入的密码有误，请重新输入"
-					// 	return
-					// }else{
-					// 	this.pwdError = ''
-					// }
-					
 					data.username = this.username
 					data.password = this.password
 					
@@ -297,18 +257,6 @@
 								console.log('存入token失败')
 							}
 						})
-						// try {
-						//     uni.setStorageSync('token', JSON.stringify(res.data.data));
-						// 	setTimeout(()=>{
-						// 		uni.switchTab({
-						// 			url:'my',
-						// 		})
-						// 	},2000)
-							
-						// } catch (e) {
-						//     console.log('存入token失败')
-						// }
-						
 					}else{
 						if(this.pwdOrCode){
 							this.codeError = "验证码有误"
