@@ -123,7 +123,7 @@
 					<view class="ribBorder" v-for="(item, index) in imgList" :key="index" @click="urlClick(item.url)">
 						<!-- 这里编写您的内容，item为您传递给v-model的数组元素 -->
 						<view class="lazyImg">
-							<image v-if="index<3" :src="item.filepath" :index="index" mode=""></image>
+							<image v-if="index<3" class="unlazy-img" :src="item.filepath" :index="index" mode=""></image>
 							<u-lazy-load v-if="index>=3" threshold="300" :image="item.filepath" :index="index" imgMode="scaleToFill"></u-lazy-load>
 						</view>
 
@@ -144,7 +144,7 @@
 						<view @click="urlClick(item.url)">
 							<!-- 这里编写您的内容，item为您传递给v-model的数组元素 -->
 							<view class="lazyImg">
-								<image v-if="index<3" :src="item.pano_thumb" :index="index" mode=""></image>
+								<image v-if="index<3" class="unlazy-img" :src="item.pano_thumb" :index="index" mode=""></image>
 								<u-lazy-load v-if="index>=3" threshold="300" :image="item.pano_thumb" :index="index" imgMode="scaleToFill"></u-lazy-load>
 							</view>
 							<view class="d3-img" v-if="isStyleActive==3">
@@ -524,6 +524,9 @@
 </script>
 
 <style scoped>
+	.unlazy-img{
+		width: 100%;
+	}
 	.all-imgs {
 		height: 60rpx;
 		margin-top: 20rpx;

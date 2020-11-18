@@ -224,7 +224,7 @@
 						_this.$http.Get('company/getList',obj).then(res=>{
 							console.log('进入页面获取装修公司列表',res.data.data)
 							let data = res.data.data
-							if(!data){
+							if(data.length == 0){
 								_this.boxShow = true
 							}else{
 								_this.boxShow = false
@@ -293,6 +293,7 @@
 					sort:this.sort,
 					areaid:this.areaid
 				}
+				let _this = this
 				this.$http.Get('company/getList',obj).then(res=>{
 					console.log('获取装修公司列表',res.data)
 					if(this.page !=1){
@@ -304,7 +305,7 @@
 						}
 					}
 					let data = res.data.data
-					if(!data){
+					if(data.length == 0){
 						_this.boxShow = true
 					}else{
 						_this.boxShow = false

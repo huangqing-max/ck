@@ -122,7 +122,6 @@
 			
 			// 跳转到my页面
 			switchTabClick(){
-				
 				uni.switchTab({
 					url:'my'
 				})

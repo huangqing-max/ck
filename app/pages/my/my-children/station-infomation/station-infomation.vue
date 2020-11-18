@@ -55,14 +55,15 @@
 				}
 				let _this = this
 				this.$http.MyGet('my_center/myMessage',obj).then(res=>{
-					console.log('搜索数据',res.data)
+					console.log('搜索数据',res.data.data)
 					// this.infoData = res.data.data
 					if(res.data.code==0){
 						_this.infoData = res.data.data
-						if(!res.data.data){
-							_this.boxShow = true
-						}else{
+						if(_this.infoData.length != 0){
+							console.log('------')
 							_this.boxShow = false
+						}else{
+							_this.boxShow = true
 						}
 					}else{
 						_this.boxShow = true

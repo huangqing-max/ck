@@ -58,12 +58,13 @@
 		methods:{
 			
 			handleData(){
+				let _this = this
 				this.$http.MyGet('my_center/contractList').then(res=>{
 					console.log('合同列表',res.data.data)
 					// this.data = res.data.data
 					if(res.data.code==0){
 						_this.data = res.data.data
-						if(!res.data.data){
+						if(_this.data.length == 0){
 							_this.boxShow = true
 						}else{
 							_this.boxShow = false

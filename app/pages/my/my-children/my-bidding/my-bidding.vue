@@ -61,11 +61,12 @@
 					page:this.page
 				}
 				//我的招标列表
+				let _this = this
 				this.$http.MyGet('my_center/myorder',obj).then(res=>{
 					console.log('我的招标列表',res.data)
 					if(res.data.code==0){
 						this.data = res.data.data
-						if(!res.data.data){
+						if(this.data.length == 0){
 							_this.boxShow = true
 						}else{
 							_this.boxShow = false
