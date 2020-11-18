@@ -41,21 +41,27 @@
 					oldPwd: [
 						{
 							required: true,
-							message: '请输入当前登录密码',
-							// 可以单个或者同时写两个触发验证方式
-							trigger: ['change']
-						}
-					],
-					newPwd: [
-						{
-							required: true,
-							message: '新密码不能为空',
+							message: '请输入新密码',
 							// 可以单个或者同时写两个触发验证方式
 							trigger: ['change']
 						},
 						// 6-8个字符之间的判断
 						{
-							min: 4,
+							min: 6,
+							max: 20,
+							message: '长度在6-8个字符之间'
+						},
+					],
+					newPwd: [
+						{
+							required: true,
+							message: '确认新密码不能为空',
+							// 可以单个或者同时写两个触发验证方式
+							trigger: ['change']
+						},
+						// 6-8个字符之间的判断
+						{
+							min: 6,
 							max: 20,
 							message: '长度在6-8个字符之间'
 						},

@@ -59,7 +59,8 @@
 			<view style="height: 120rpx;"></view>
 			
 			<view class="img-box">
-				<view v-if="boxData.length==0" class="noData">
+				<!-- <view v-if="boxData.length==0" class="noData"> -->
+				<view v-if="boxShow" class="noData">
 					<image src="../../common/image/index/icon/my/nodata.jpg" mode=""></image>
 				</view>
 				<view class="center-box" v-for="(item,index) in boxData" @click="companyClick(item)" :key="index">
@@ -138,6 +139,7 @@
 				sort:0,
 				dir:'',
 				show:false,
+				boxShow:false,
 				nomoreShow:false,
 				popupShow:false,
 				showDown:false,
@@ -222,7 +224,11 @@
 						_this.$http.Get('company/getList',obj).then(res=>{
 							console.log('进入页面获取装修公司列表',res.data.data)
 							let data = res.data.data
-							
+							if(!data){
+								_this.boxShow = true
+							}else{
+								_this.boxShow = false
+							}
 							_this.boxData = data
 							uni.stopPullDownRefresh()
 						})
@@ -246,7 +252,11 @@
 				this.$http.Get('company/companySearch',obj).then(res=>{
 					console.log('装修公司-搜索',res.data)
 					let data = res.data.data
-					
+					if(!data){
+						_this.boxShow = true
+					}else{
+						_this.boxShow = false
+					}
 					this.boxData = data
 					setTimeout(()=>{
 						uni.stopPullDownRefresh()
@@ -294,6 +304,11 @@
 						}
 					}
 					let data = res.data.data
+					if(!data){
+						_this.boxShow = true
+					}else{
+						_this.boxShow = false
+					}
 					this.showDown = false
 					setTimeout(()=>{
 						uni.stopPullDownRefresh()

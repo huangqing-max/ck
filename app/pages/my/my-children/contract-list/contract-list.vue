@@ -12,7 +12,7 @@
 			</view>
 			
 			<view style="height: 100rpx;"></view>
-			<view v-if="data.length==0" class="noData">
+			<view v-if="boxShow" class="noData">
 				<image src="../../../../common/image/index/icon/my/nodata.jpg" mode=""></image>
 			</view>
 			<view v-if="data.length>0">
@@ -43,6 +43,7 @@
 		data(){
 			return{
 				data:[],
+				boxShow:false,
 			}
 		},
 		watch:{},
@@ -57,10 +58,19 @@
 		methods:{
 			
 			handleData(){
-				console.log('/////////////////')
 				this.$http.MyGet('my_center/contractList').then(res=>{
 					console.log('合同列表',res.data.data)
-					this.data = res.data.data
+					// this.data = res.data.data
+					if(res.data.code==0){
+						_this.data = res.data.data
+						if(!res.data.data){
+							_this.boxShow = true
+						}else{
+							_this.boxShow = false
+						}
+					}else{
+						_this.boxShow = true
+					}
 				})
 			},
 			

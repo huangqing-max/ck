@@ -12,7 +12,7 @@
 			</view>
 			
 			<view style="height: 100rpx;"></view>
-			<view v-if="infoData.length==0" class="noData">
+			<view v-if="boxShow" class="noData">
 				<image src="../../../../common/image/index/icon/my/nodata.jpg" mode=""></image>
 			</view>
 			<view v-if="infoData.length>0" v-for="(item,index) in infoData" :key="index" >
@@ -37,7 +37,8 @@
 	export default{
 		data(){
 			return{
-				infoData:[]
+				infoData:[],
+				boxShow:false,
 			}
 		},
 		watch:{},
@@ -52,10 +53,20 @@
 				let obj = {
 					page:1
 				}
-				
+				let _this = this
 				this.$http.MyGet('my_center/myMessage',obj).then(res=>{
 					console.log('搜索数据',res.data)
-					this.infoData = res.data.data
+					// this.infoData = res.data.data
+					if(res.data.code==0){
+						_this.infoData = res.data.data
+						if(!res.data.data){
+							_this.boxShow = true
+						}else{
+							_this.boxShow = false
+						}
+					}else{
+						_this.boxShow = true
+					}
 				})
 			},
 		},

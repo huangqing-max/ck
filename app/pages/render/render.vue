@@ -123,8 +123,8 @@
 					<view class="ribBorder" v-for="(item, index) in imgList" :key="index" @click="urlClick(item.url)">
 						<!-- 这里编写您的内容，item为您传递给v-model的数组元素 -->
 						<view class="lazyImg">
-							<!-- <image :src="item.image" mode=""></image> -->
-							<u-lazy-load threshold="300" :image="item.filepath" :index="index" imgMode="scaleToFill"></u-lazy-load>
+							<image v-if="index<3" :src="item.filepath" :index="index" mode=""></image>
+							<u-lazy-load v-if="index>=3" threshold="300" :image="item.filepath" :index="index" imgMode="scaleToFill"></u-lazy-load>
 						</view>
 
 						<view class="demo-description">
@@ -144,7 +144,8 @@
 						<view @click="urlClick(item.url)">
 							<!-- 这里编写您的内容，item为您传递给v-model的数组元素 -->
 							<view class="lazyImg">
-								<u-lazy-load threshold="300" :image="item.pano_thumb" :index="index" imgMode="scaleToFill"></u-lazy-load>
+								<image v-if="index<3" :src="item.pano_thumb" :index="index" mode=""></image>
+								<u-lazy-load v-if="index>=3" threshold="300" :image="item.pano_thumb" :index="index" imgMode="scaleToFill"></u-lazy-load>
 							</view>
 							<view class="d3-img" v-if="isStyleActive==3">
 							</view>
@@ -246,17 +247,17 @@
 		},
 
 		onShow() {
-			uni.startPullDownRefresh({
-				success(res) {
-					console.log('刷新成功', res)
-				},
-				fail(err) {
-					console.log(err)
-				}
-			})
-			setTimeout(function() {
-				uni.stopPullDownRefresh()
-			}, 1500)
+			// uni.startPullDownRefresh({
+			// 	success(res) {
+			// 		console.log('刷新成功', res)
+			// 	},
+			// 	fail(err) {
+			// 		console.log(err)
+			// 	}
+			// })
+			// setTimeout(function() {
+			// 	uni.stopPullDownRefresh()
+			// }, 1500)
 			this.page = 0
 			this.isStyleActive == 0
 			this.handleAllData()
@@ -281,6 +282,9 @@
 		onPullDownRefresh() {
 			this.isFirst = false
 			this.page = 0
+			setTimeout(function() {
+				uni.stopPullDownRefresh()
+			}, 1500)
 			this.handleAllData();
 		},
 		methods: {
@@ -323,8 +327,6 @@
 					}
 					_this.flowOneList = list
 				})
-				
-				
 			},
 
 			urlClick(url) {

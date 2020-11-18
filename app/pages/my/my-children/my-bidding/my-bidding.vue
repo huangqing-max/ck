@@ -12,7 +12,8 @@
 			</view>
 			
 			<view style="height: 100rpx;"></view>
-			<view v-if="data.length==0" class="noData">
+			<!-- <view v-if="data.length==0" class="noData"> -->
+			<view v-if="boxShow" class="noData">
 				<image src="../../../../common/image/index/icon/my/nodata.jpg" mode=""></image>
 			</view>
 			<view v-if="data.length>0" class="">
@@ -40,7 +41,8 @@
 		data(){
 			return{
 				data:[],
-				page:0
+				page:0,
+				boxShow:false,
 			}
 		},
 		watch:{},
@@ -63,6 +65,13 @@
 					console.log('我的招标列表',res.data)
 					if(res.data.code==0){
 						this.data = res.data.data
+						if(!res.data.data){
+							_this.boxShow = true
+						}else{
+							_this.boxShow = false
+						}
+					}else{
+						_this.boxShow = true
 					}
 				})
 			},
