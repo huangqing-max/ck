@@ -2,8 +2,8 @@
     "name" : "装信通",
     "appid" : "__UNI__27990BB",
     "description" : "",
-    "versionName" : "2.0.8",
-    "versionCode" : 208,
+    "versionName" : "2.0.9",
+    "versionCode" : 209,
     "transformPx" : false,
     "app-plus" : {
         "statusbar" : {
