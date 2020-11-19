@@ -108,21 +108,16 @@
 			_this.handlearea()
 		},
 		created() {
-			
 			let _this = this
-			// _this.handlearea()
 			uni.getStorage({
 				key:'historyCity',
 				success(res) {
 					_this.historyCityList = res.data
 				}
 			})
-			
-			
 		},
 		
 		methods: {
-			
 			handlearea(){
 				this.$http.Get('area/getcity').then(res=>{
 					console.log('获取的城市',res.data.data)
