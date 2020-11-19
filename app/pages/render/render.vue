@@ -263,12 +263,12 @@
 			this.handleAllData()
 		},
 		created() {
-			let that = this
-			this.$http.Get('xgt/getIndexFilterData').then(res => {
-				console.log('效果图的标题', res.data.data)
-				that.list = res.data.data
-				that.childrenList = res.data.data[0].data
-			})
+			// let that = this
+			// this.$http.Get('xgt/getIndexFilterData').then(res => {
+			// 	console.log('效果图的标题', res.data.data)
+			// 	that.list = res.data.data
+			// 	that.childrenList = res.data.data[0].data
+			// })
 		},
 		onReachBottom() {
 			this.isFirst = false
@@ -290,6 +290,12 @@
 		methods: {
 			
 			handleAllData(){
+				let that = this
+				this.$http.Get('xgt/getIndexFilterData').then(res => {
+					console.log('效果图的标题', res.data.data)
+					that.list = res.data.data
+					that.childrenList = res.data.data[0].data
+				})
 				let obj = {
 					'page': 1,
 					'pagesize': 10,

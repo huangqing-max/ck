@@ -79,9 +79,7 @@
 			}
 		},
 		onPullDownRefresh() {
-			setTimeout(function(){
-				uni.stopPullDownRefresh()
-			},1000)
+			uni.stopPullDownRefresh()
 		},
 		onShow() {
 			let _this = this
