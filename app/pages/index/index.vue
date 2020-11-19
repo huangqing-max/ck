@@ -819,32 +819,40 @@
 										console.log('经纬度存储成功')
 									}
 								})
-								//根据城市获取城市信息
-								that.$http.All('area/getAreaByName', obj).then((re) => {
-									console.log('根据城市名字获取当前城市的相应数据信息', re.data.data)
-									uni.setStorage({
-										key: 'dirAndAreaid',
-										data: re.data.data,
-										success() {
-											console.log('首页存入当前地理信息成功', re.data.data)
-											that.cityPosition = re.data.data.areaname
-											_this.isCity = true
-											_this.handleSwiper()
-											// _this.addRandomData(re.data.data.dir)
-											_this.handleAllData(re.data.data.dir)
-										}
-									})
-								})
-								getApp().globalData.city = res.address.city
+								that.handleCityForName(obj)
 							},
 							fail(err) {
 								console.log('获取城市失败', err)
+								let obj = {
+									city: '北京'
+								}
+								that.handleCityForName(obj)
 							}
 						})
 						// #endif
 					}
 				})
 				console.log('存储的城市', this.cityPosition)
+			},
+			
+			//根据城市名字获取当前城市的相应数据信息
+			handleCityForName(obj){
+				let _this = this
+				//根据城市获取城市信息
+				this.$http.All('area/getAreaByName', obj).then((re) => {
+					console.log('根据城市名字获取当前城市的相应数据信息', re.data.data)
+					uni.setStorage({
+						key: 'dirAndAreaid',
+						data: re.data.data,
+						success() {
+							console.log('首页存入当前地理信息成功', re.data.data)
+							_this.cityPosition = re.data.data.areaname
+							_this.isCity = true
+							_this.handleSwiper()
+							_this.handleAllData(re.data.data.dir)
+						}
+					})
+				})
 			},
 
 			change(index) {
