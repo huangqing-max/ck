@@ -183,19 +183,10 @@
 			setTimeout(function(){
 				_this.handleData()
 			},1500)
-			
 			// 模拟数据加载
 		},
 		onShow() {
-			uni.startPullDownRefresh({
-				success(res) {
-					console.log('刷新成功',res)
-				},
-				fail(err) {
-					console.log(err)
-				}
-			})
-			
+			// this.handle()
 		},
 		
 		methods:{
