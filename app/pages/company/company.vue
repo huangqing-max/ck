@@ -168,13 +168,13 @@
 		},
 		computed:{},
 		created(){
-			
 			this.handle()
 		},
 		
 		onPullDownRefresh() {
-			// this.handle()
-			
+			setTimeout(()=>{
+				uni.stopPullDownRefresh()
+			},1500)
 		},
 		onReachBottom() {
 			this.loadStatus = 'loading'
