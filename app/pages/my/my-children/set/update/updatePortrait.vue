@@ -20,7 +20,6 @@
 						:file-list="fileList" @on-change="onChange1" @on-remove="onRemove1" ></u-upload>
 					</view>
 					<view class="formError" v-if="sidError_1" >请选择图片</view>
-					<view class="formLabelTwo" >请保证图片清晰有效无涂改,否则可能审核不通过哦</view>
 				</view>
 				
 				<view>
