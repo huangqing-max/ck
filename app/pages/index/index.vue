@@ -823,6 +823,11 @@
 							},
 							fail(err) {
 								console.log('获取城市失败', err)
+								uni.showToast({
+									title: '定位失败,请检查定位权限是否打开',
+									icon:'none',
+									duration:3000
+								});
 								let obj = {
 									city: '北京'
 								}

@@ -118,32 +118,23 @@
 		},
 		methods: {
 			myClick(url){
-				
-				if(this.isLogin){
+				uni.navigateTo({
+					url:url
+				})
+				if(url == ''){
 					uni.navigateTo({
-						url:'login'
+						url:url
 					})
 				}else{
-					this.$http.MyGet('my_center/getUserInfo').then(res=>{
-						console.log('个人中心首页获取是否已经完善了身份证信息',res.data)
-						if(res.data.code==0){
-							if(res.data.data.isperfect!=1){
-								console.log('*********')
-								uni.navigateTo({
-									url:'my-children/userinfo/userinfo'
-								})
-							}else{
-								uni.navigateTo({
-									url:url
-								})
-							}
-						}else{
-							uni.navigateTo({
-								url:'my-children/userinfo/userinfo'
-							})
-						}
-					})
-					
+					if(this.isLogin){
+						uni.navigateTo({
+							url:'login'
+						})
+					}else{
+						uni.navigateTo({
+							url:url
+						})
+					}
 				}
 			}
 		}
