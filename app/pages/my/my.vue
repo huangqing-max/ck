@@ -118,24 +118,24 @@
 		},
 		methods: {
 			myClick(url){
-				uni.navigateTo({
-					url:url
-				})
-				if(url == ''){
+				// uni.navigateTo({
+				// 	url:url
+				// })
+				// if(url == ''){
+				// 	uni.navigateTo({
+				// 		url:url
+				// 	})
+				// }else{
+				if(this.isLogin){
+					uni.navigateTo({
+						url:'login'
+					})
+				}else{
 					uni.navigateTo({
 						url:url
 					})
-				}else{
-					if(this.isLogin){
-						uni.navigateTo({
-							url:'login'
-						})
-					}else{
-						uni.navigateTo({
-							url:url
-						})
-					}
 				}
+				// }
 			}
 		}
 	}

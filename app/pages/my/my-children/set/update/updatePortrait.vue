@@ -82,7 +82,7 @@
 				let obj = {
 					sid_1:this.sid_1,
 				}
-				this.$http.MyPost('my_center/perfectUser',obj).then(res=>{
+				this.$http.MyPost('member/modifyHeadPic',obj).then(res=>{
 					console.log('成功',res)
 					if(res.data.code==0){
 						this.$refs.uToast.show({

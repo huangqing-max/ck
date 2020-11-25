@@ -168,7 +168,7 @@
 		},
 		computed:{},
 		created(){
-			this.handle()
+			// this.handle()
 		},
 		
 		onPullDownRefresh() {
@@ -186,7 +186,7 @@
 			// 模拟数据加载
 		},
 		onShow() {
-			// this.handle()
+			this.handle()
 		},
 		
 		methods:{

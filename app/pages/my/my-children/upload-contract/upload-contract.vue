@@ -62,15 +62,15 @@
 		},
 		computed:{},
 		created(){
-			this.$http.MyGet('my_center/getUserInfo').then(res=>{
-				console.log('个人中心首页获取是否已经完善了身份证信息',res.data.data.isperfect)
-				if(res.data.data.isperfect!=1){
-					uni.navigateTo({
-						url:'../userinfo/userinfo'
-					})
-				}
+			// this.$http.MyGet('my_center/getUserInfo').then(res=>{
+			// 	console.log('个人中心首页获取是否已经完善了身份证信息',res.data.data.isperfect)
+			// 	if(res.data.data.isperfect!=1){
+			// 		uni.navigateTo({
+			// 			url:'../userinfo/userinfo'
+			// 		})
+			// 	}
 				
-			})
+			// })
 		},
 		mounted(){},
 		methods:{
