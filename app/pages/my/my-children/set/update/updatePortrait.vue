@@ -3,7 +3,7 @@
 		<view>
 			<view class="top">
 				<view class="top-title">
-					<navigator url="../../my" open-type="switchTab">
+					<navigator url="../set" open-type="switchTab">
 						<u-icon :bold="true" class="top-title-icon" name="arrow-left"></u-icon>
 					</navigator>
 				    <text class="top-title-text">修改头像</text>
@@ -80,7 +80,7 @@
 					return
 				}
 				let obj = {
-					sid_1:this.sid_1,
+					headPic:this.sid_1,
 				}
 				this.$http.MyPost('member/modifyHeadPic',obj).then(res=>{
 					console.log('成功',res)
@@ -91,8 +91,8 @@
 							type: 'success',
 						})
 						setTimeout(function(){
-							uni.switchTab({
-								url:'../../my'
+							uni.navigateTo({
+								url:'../set'
 							})
 						},1000)
 					}

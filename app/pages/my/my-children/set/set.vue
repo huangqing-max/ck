@@ -13,16 +13,16 @@
 			<view style="height: 10vh;"></view>
 
 			<view class="content">
-				<view class="content-text-image">
+				<view class="content-text-image" @click="handleUrl('head')">
 					<text class="text-left">头像设置</text>
-					<image class="image" :src="tokenInfo.logo||img" mode=""></image>
+					<image class="image" :src="userInfo.logo||img" mode=""></image>
 					<u-icon class="text-right" name="arrow-right" size="24" color="#999999"></u-icon>
 				</view>
 				<view class="content-text">
 					<view class="text">
 						<text class="text-left">用户ID</text>
 						<text class="text-center">
-							{{tokenInfo.contentid||''}}{{'&emsp;'}}
+							{{userInfo.userid||''}}{{'&emsp;'}}
 						</text>
 					</view>
 					<view class="text-center2">
@@ -33,7 +33,7 @@
 					<view class="text">
 						<text class="text-left">昵称设置</text>
 						<text class="text-center">
-							{{tokenInfo.username||''}}{{'&emsp;'}}
+							{{userInfo.truename||''}}{{'&emsp;'}}
 						</text>
 					</view>
 					<view class="text-center2">
@@ -52,7 +52,7 @@
 					<view class="text">
 						<text class="text-left">手机号码</text>
 						<text class="text-center">
-							{{tokenInfo.phone||''}}{{'&emsp;'}}
+							{{userInfo.loginphone||''}}{{'&emsp;'}}
 						</text>
 					</view>
 					<view class="text-center2">
@@ -120,6 +120,7 @@
 				version: '',
 				fileSizeString: '',
 				tokenInfo: {},
+				userInfo:{},
 				token: '',
 			}
 		},
@@ -150,6 +151,11 @@
 					if(i=='phone'){
 						uni.navigateTo({
 							url:'update/updatePhone'
+						})
+					}
+					if(i=='head'){
+						uni.navigateTo({
+							url:'update/updatePortrait'
 						})
 					}
 					if(i=='pwd'){
@@ -321,6 +327,7 @@
 								}
 								_this.$http.MyGet('member/getUserInfo',data).then(res=>{
 									console.log('*********************-----当前用户个人信息----------------++++++++++++',res.data)
+									_this.userInfo = res.data.data
 								})
 							}
 						}

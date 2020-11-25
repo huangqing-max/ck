@@ -10,11 +10,12 @@
 			<view class="personal-introduction">
 				
 				<view  class="">
-					<navigator v-if="!isLogin" url="my-children/userinfo/user-detail" hover-class="none">
+					<navigator v-if="!isLogin"  hover-class="none">
+					<!-- <navigator v-if="!isLogin" url="my-children/userinfo/user-detail" hover-class="none"> -->
 					    <image :src="info.logo||'my-children/userinfo/userinfo'" mode=""></image>
-						<text class="text-up">{{info.username||'暂时未取名'}}</text>
-						<text class="text-down">项目ID：{{info.contentid||'暂无资料'}}</text>
-						<u-icon :bold="true" class="personal-icon" name="arrow-right"></u-icon>
+						<text class="text-up">{{info.truename||'暂时未取名'}}</text>
+						<!-- <text class="text-down">项目ID：{{info.contentid||'暂无资料'}}</text> -->
+						<!-- <u-icon :bold="true" class="personal-icon" name="arrow-right"></u-icon> -->
 					</navigator>
 					
 					<navigator v-if="isLogin" url="login" hover-class="none">
@@ -103,12 +104,20 @@
 				key:'token',
 				success(res){
 					console.log('token成功取出',res.data)
-					_this.info = res.data
+					// _this.info = res.data
 					_this.isLogin = false
 					if(!res.data.token){
 						_this.isLogin = true
 					}
-					
+					if(res.data.contentid){
+						let data = {
+							contentid:res.data.contentid
+						}
+						_this.$http.MyGet('member/getUserInfo',data).then(res=>{
+							console.log('*********************-----当前用户个人信息----------------++++++++++++',res.data)
+							_this.info = res.data.data
+						})
+					}
 				},
 				fail(err) {
 					console.log('token取出错误----没有token',err)
@@ -184,7 +193,7 @@
 	.text-up {
 		position: absolute;
 		left: 220rpx;
-		top: 70rpx;
+		top: 92rpx;
 		font-size: 32rpx;
 		color: rgba(16, 16, 16, 100);
 		line-height: 46rpx;

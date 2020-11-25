@@ -60,7 +60,7 @@
 					key: 'token',
 					success(res) {
 						console.log('+++++---------------+++++++++', res.data.username)
-						_this.form.username = res.data.username
+						// _this.form.username = res.data.username
 					},
 					fail(err) {
 						console.log('token取出错误', err)
@@ -76,15 +76,20 @@
 					if (valid) {
 						console.log('验证通过');
 						let data = {
-							mobile:this.form.username,
+							trueName:this.form.username,
 						}
 						_this.$http.MyPost('member/modifyTrueName',data).then(res=>{
-							console.log('修改昵称',res)
+							console.log('修改昵称',res.data)
 							if(res.data.code == 0){
 								_this.$refs.uToast.show({
 									title: '修改昵称成功',
 									type: 'success',
 								})
+								setTimeout(function(){
+									uni.navigateTo({
+										url:'../set'
+									})
+								},1000)
 							}else{
 								_this.$refs.uToast.show({
 									title: res.data.msg,
