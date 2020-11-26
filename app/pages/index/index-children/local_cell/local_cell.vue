@@ -121,11 +121,11 @@
 			this.cityPosition = getApp().globalData.city
 			this.dir = getApp().globalData.dir
 			this.areaid = getApp().globalData.areaid
-			uni.startPullDownRefresh({
-				success() {
-					console.log('进入页面的刷新掩饰加载数据')
-				}
-			})
+			// uni.startPullDownRefresh({
+			// 	success() {
+			// 		console.log('进入页面的刷新掩饰加载数据')
+			// 	}
+			// })
 		},
 		
 		onPullDownRefresh() {
