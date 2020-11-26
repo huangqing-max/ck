@@ -84,7 +84,7 @@ function Get(url, obj) {
 				uni.getStorage({
 					key: url + JSON.stringify(data),
 					success(res) {
-						console.log('在缓存里面获取数据success---------------',res.data)
+						// console.log('在缓存里面获取数据success---------------',res.data)
 						resolve(res.data)
 					},
 					fail(err) {

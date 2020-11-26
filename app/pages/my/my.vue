@@ -12,7 +12,7 @@
 				<view  class="">
 					<navigator v-if="!isLogin"  hover-class="none">
 					<!-- <navigator v-if="!isLogin" url="my-children/userinfo/user-detail" hover-class="none"> -->
-					    <image :src="info.logo||'my-children/userinfo/userinfo'" mode=""></image>
+					    <image :src="info.logo||img" mode=""></image>
 						<text class="text-up">{{info.truename||'暂时未取名'}}</text>
 						<!-- <text class="text-down">项目ID：{{info.contentid||'暂无资料'}}</text> -->
 						<!-- <u-icon :bold="true" class="personal-icon" name="arrow-right"></u-icon> -->
@@ -46,6 +46,7 @@
 			return {
 				isLogin:false,
 				info:{},
+				img:require('../../common/image/index/icon/my/head_default.gif'),
 				myData: [{
 						title: '我的招标',
 						url: 'my-children/my-bidding/my-bidding',
@@ -85,21 +86,6 @@
 		onShow() {
 			let _this = this
 			console.log('onshow')
-			
-			// try {
-			//     const value = uni.getStorageSync('token');
-			// 	if(value.length>0){
-			// 		console.log('value--------------',JSON.parse(value))
-			// 		_this.info = JSON.parse(value)
-			// 		_this.isLogin = false
-			// 	}else{
-			// 		console.log('token取出错误----没有token')
-			// 		_this.isLogin = true
-			// 	}
-			// } catch (err) {
-			// 	console.log('token取出错误----没有token')
-			// 	_this.isLogin = true
-			// }
 			uni.getStorage({
 				key:'token',
 				success(res){
@@ -109,7 +95,7 @@
 					if(!res.data.token){
 						_this.isLogin = true
 					}
-					if(res.data.contentid){
+					// if(res.data.contentid){
 						let data = {
 							contentid:res.data.contentid
 						}
@@ -117,7 +103,7 @@
 							console.log('*********************-----当前用户个人信息----------------++++++++++++',res.data)
 							_this.info = res.data.data
 						})
-					}
+					// }
 				},
 				fail(err) {
 					console.log('token取出错误----没有token',err)
@@ -127,14 +113,6 @@
 		},
 		methods: {
 			myClick(url){
-				// uni.navigateTo({
-				// 	url:url
-				// })
-				// if(url == ''){
-				// 	uni.navigateTo({
-				// 		url:url
-				// 	})
-				// }else{
 				if(this.isLogin){
 					uni.navigateTo({
 						url:'login'
@@ -144,7 +122,6 @@
 						url:url
 					})
 				}
-				// }
 			}
 		}
 	}

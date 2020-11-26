@@ -54,6 +54,9 @@
 		mounted(){
 			// this.handleData()
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh()
+		},
 		methods:{
 			handleData(){
 				++this.page

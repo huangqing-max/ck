@@ -348,7 +348,7 @@
 							<image src="../../common/image/index/icon/index/update.jpg" mode=""></image>
 						</view>
 						<view class="modalButton">
-							<view class="down-button" @click="doUpData()">
+							<view class="down-button" @click="UpData()">
 								马上更新
 							</view>
 							<view class="down-button-down" @click="showModal = false">
@@ -701,19 +701,44 @@
 				let version = (plus.runtime.version).split('.').join('')
 				let newVersion = ''
 				console.log('当前版本号version：', version)
-				_this.$http.VersionGet('version/getNow').then(res => {
-					console.log('最新版本号version：', res.data.data.version)
-					newVersion = res.data.data.version.split('.').join('')
-					if (newVersion>version) {
-						console.log('当前有最新版本，请更新')
-						_this.showModal = true
-					} else {
-						console.log('当前已经是最新版本')
-					}
-				})
-
+				let os = plus.os.name
+				if (os == 'Android'){
+					_this.$http.VersionGet('version/getNow').then(res => {
+						console.log('最新版本号version：', res.data.data.version)
+						newVersion = res.data.data.version.split('.').join('')
+						if (newVersion>version) {
+							console.log('当前有最新版本，请更新')
+							_this.showModal = true
+						} else {
+							console.log('当前已经是最新版本')
+						}
+					})
+				}else if ( os == 'iOS'){
+					console.log('查询ios当前有最新版号')
+					_this.$http.VersionGet('version/getAppleNow').then(res => {
+						console.log('ios最新版本号version：', res.data.data.version)
+						newVersion = res.data.data.version.split('.').join('')
+						if (newVersion > version) {
+							console.log('当前有最新版本，请更新')
+							_this.showModal = true
+						} else {
+							console.log('当前已经是最新版本')
+							uni.showToast({
+								title: '已是最新版本',
+								duration: 2000
+							});
+						}
+					})
+				}
 			},
-
+			UpData(){
+				let os = plus.os.name
+				if (os == 'Android'){
+					this.doUpData()
+				}else if ( os == 'iOS'){
+					this.doIosUp()
+				}
+			},
 			doUpData() {
 				this.showModal = false
 				uni.showLoading({
@@ -808,10 +833,26 @@
 							type: 'wgs84',
 							geocode: true,
 							success: (res) => {
+								uni.getSystemInfo({
+									success: function(res) {
+										console.log('/*************************/////当前手机型号------------------', res)
+										if (res.platform == "android") {
+											console.log('当前是android')
+											let objCity = {
+												city: res.address.city
+											}
+											that.handleCityForName(objCity)
+										}else if(res.platform == "ios"){
+											console.log('/*************************/////当前手机型号ios')
+											let objCity = {
+												city: '北京'
+											}
+											that.handleCityForName(objCity)
+										}
+									}
+								});
 								console.log('获取当前城市信息,只需要城市名字', res)
-								let obj = {
-									city: res.address.city
-								}
+								
 								uni.setStorage({
 									key: 'latitudeAndLongitude',
 									data: res,
@@ -819,7 +860,6 @@
 										console.log('经纬度存储成功')
 									}
 								})
-								that.handleCityForName(obj)
 							},
 							fail(err) {
 								console.log('获取城市失败', err)
@@ -828,10 +868,10 @@
 									icon:'none',
 									duration:3000
 								});
-								let obj = {
+								let objCity = {
 									city: '北京'
 								}
-								that.handleCityForName(obj)
+								that.handleCityForName(objCity)
 							}
 						})
 						// #endif
@@ -840,9 +880,11 @@
 				console.log('存储的城市', this.cityPosition)
 			},
 			
+			
 			//根据城市名字获取当前城市的相应数据信息
 			handleCityForName(obj){
 				let _this = this
+				console.log('00000000000', obj)
 				//根据城市获取城市信息
 				this.$http.All('area/getAreaByName', obj).then((re) => {
 					console.log('根据城市名字获取当前城市的相应数据信息', re.data.data)
@@ -899,6 +941,34 @@
 				//系统信息
 				uni.getSystemInfo({
 					success: function(res) {
+						console.log('///////////////////当前手机型号------------------', res)
+						if (res.platform == "android") {
+							console.log('当前是android')
+							// 获取mac地址
+							var net = plus.android.importClass("java.net.NetworkInterface")
+							var wl0 = net.getByName('wlan0')
+							var macByte = wl0.getHardwareAddress()
+							var str = ''
+							//下面这段代码来自网络  
+							for (var i = 0; i < macByte.length; i++) {
+								var tmp = "";
+								var num = macByte[i];
+								if (num < 0) {
+									tmp = (255 + num + 1).toString(16);
+								} else {
+									tmp = num.toString(16);
+								}
+								if (tmp.length == 1) {
+									tmp = "0" + tmp;
+								}
+								str += tmp;
+							}
+							let mac = {
+								mac: str
+							}
+							console.log(mac)
+							systemData.push(mac)
+						}
 						systemData.push(res)
 					}
 				});
@@ -910,30 +980,7 @@
 				});
 
 
-				// 获取mac地址
-				var net = plus.android.importClass("java.net.NetworkInterface")
-				var wl0 = net.getByName('wlan0')
-				var macByte = wl0.getHardwareAddress()
-				var str = ''
-				//下面这段代码来自网络  
-				for (var i = 0; i < macByte.length; i++) {
-					var tmp = "";
-					var num = macByte[i];
-					if (num < 0) {
-						tmp = (255 + num + 1).toString(16);
-					} else {
-						tmp = num.toString(16);
-					}
-					if (tmp.length == 1) {
-						tmp = "0" + tmp;
-					}
-					str += tmp;
-				}
-				let mac = {
-					mac: str
-				}
-				console.log(mac)
-				systemData.push(mac)
+				
 			},
 
 			// 数据的获取方法

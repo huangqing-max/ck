@@ -2,8 +2,8 @@
     "name" : "装信通",
     "appid" : "__UNI__27990BB",
     "description" : "",
-    "versionName" : "2.1.2",
-    "versionCode" : 212,
+    "versionName" : "2.1.6",
+    "versionCode" : 216,
     "transformPx" : false,
     "app-plus" : {
         "statusbar" : {
@@ -12,8 +12,7 @@
         "nvueCompiler" : "uni-app",
         "compilerVersion" : 3,
         "modules" : {
-            "Geolocation" : {},
-            "OAuth" : {}
+            "Geolocation" : {}
         },
         "distribute" : {
             "android" : {
@@ -49,8 +48,9 @@
                 "ad" : {},
                 "geolocation" : {
                     "amap" : {
-                        "__platform__" : [ "android" ],
-                        "appkey_android" : "e17c2805a6f8a7b65a8d8b71ec8ff056"
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_android" : "e17c2805a6f8a7b65a8d8b71ec8ff056",
+                        "appkey_ios" : "8868754461a83418ad65fc845b425c77"
                     }
                 },
                 "oauth" : {

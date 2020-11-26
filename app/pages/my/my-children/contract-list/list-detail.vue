@@ -87,7 +87,7 @@
 						let obj = {
 							id:res.data
 						}
-						_this.$http.Get('my_center/contractShow',obj).then(res=>{
+						_this.$http.MyGet('my_center/contractShow',obj).then(res=>{
 							console.log('返回的合同详细信息',res.data.data)
 							_this.info = res.data.data
 							_this.imgs = JSON.parse(JSON.stringify(res.data.data.imgs).replace(/img_path/g,'url'))

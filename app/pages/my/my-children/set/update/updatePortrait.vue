@@ -3,7 +3,7 @@
 		<view>
 			<view class="top">
 				<view class="top-title">
-					<navigator url="../set" open-type="switchTab">
+					<navigator url="../set" hover-class="none">
 						<u-icon :bold="true" class="top-title-icon" name="arrow-left"></u-icon>
 					</navigator>
 				    <text class="top-title-text">修改头像</text>
@@ -19,11 +19,11 @@
 						@on-choose-complete="Err1" max-count="1" :action="action" 
 						:file-list="fileList" @on-change="onChange1" @on-remove="onRemove1" ></u-upload>
 					</view>
-					<view class="formError" v-if="sidError_1" >请选择图片</view>
+					<!-- <view class="formError" v-if="sidError_1" >请选择图片</view> -->
 				</view>
 				
 				<view>
-					<button class="button" @click="submit()" >确认提交</button>
+					<button :disabled="disabled" class="button" @click="submit()" >确认提交</button>
 				</view>
 				 
 			</view>
@@ -40,12 +40,14 @@
 				fileList:[],
 				sid_1:'',
 				sidError_1:false,
+				disabled:true,
 			}
 		},
 		watch:{
 			sid_1(value){
 				if(value.length>0){
-					this.sidError_1 = false
+					// this.sidError_1 = false
+					this.disabled = false
 				}
 			},
 		},

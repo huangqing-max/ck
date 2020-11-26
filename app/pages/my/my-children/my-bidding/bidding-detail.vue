@@ -57,8 +57,11 @@
 				data:[],
 			}
 		},
-		mounted() {
+		created() {
 			this.handleData()
+		},
+		mounted() {
+			
 		},
 		methods: {
 			
@@ -67,14 +70,15 @@
 				uni.getStorage({
 					key:'myBiddingContentid',
 					success(res){
+						console.log(res.data)
 						let obj = {
 							contentid:res.data
 						}
-						_this.$http.Get('my_center/orderShow',obj).then(res=>{
-							console.log('返回的详细信息',res.data.data)
+						_this.$http.MyGet('my_center/orderShow',obj).then(res=>{
+							console.log('返回的详细信息',res.data)
 							_this.info = res.data.data
 						})
-						_this.$http.Get('my_center/zbCompany',obj).then(res=>{
+						_this.$http.MyGet('my_center/zbCompany',obj).then(res=>{
 							console.log('返回的投标公司列表',res.data.data)
 							_this.data = res.data.data
 						})

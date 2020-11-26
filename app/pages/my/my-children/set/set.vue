@@ -90,7 +90,7 @@
 							<image src="../../../../common/image/index/icon/index/update.jpg" mode=""></image>
 						</view>
 						<view class="modalButton">
-							<view class="down-button-up" @click="doUpData()">
+							<view class="down-button-up" @click="UpData()">
 								马上更新
 							</view>
 							<view class="down-button-down" @click="showModal = false">
@@ -188,10 +188,11 @@
             // 清除缓存
 			clearCache() {
 				let _this = this
-				uni.clearStorage()
+				// uni.clearStorage()
 				console.log('----------------------_this.tokenInfo', _this.tokenInfo)
 				let that = this;
 				let os = plus.os.name;
+				console.log('----------==============------------_this.tokenInfo',os)
 				if (os == 'Android') {
 					let main = plus.android.runtimeMainActivity();
 					let sdRoot = main.getCacheDir();
@@ -201,6 +202,7 @@
 						let filePath = '' + files[i]; // 没有找到合适的方法获取路径，这样写可以转成文件路径  
 						plus.io.resolveLocalFileSystemURL(filePath, function(entry) {
 							if (entry.isDirectory) {
+								uni.clearStorage()
 								entry.removeRecursively(function(entry) { //递归删除其下的所有文件及子目录  
 									uni.showToast({
 										title: '缓存清理完成',
@@ -232,6 +234,15 @@
 							title: '缓存清理完成',
 							duration: 2000
 						});
+						uni.setStorage({
+							key: 'token',
+							data: _this.tokenInfo,
+							success(res) {
+							},
+							fail() {
+								console.log('存入token失败')
+							}
+						})
 						_this.formatSize();
 					});
 				}
@@ -242,21 +253,57 @@
 				let version = (plus.runtime.version).split('.').join('')
 				let newVersion = ''
 				console.log('当前版本号version：', version)
-				_this.$http.VersionGet('version/getNow').then(res => {
-					console.log('最新版本号version：', res.data.data.version)
-					newVersion = res.data.data.version.split('.').join('')
-					if (newVersion > version) {
-						console.log('当前有最新版本，请更新')
-						_this.showModal = true
-					} else {
-						console.log('当前已经是最新版本')
-						uni.showToast({
-							title: '已是最新版本',
-							duration: 2000
-						});
-					}
-				})
-
+				let os = plus.os.name
+				console.log('-----------',os)
+				if (os == 'Android'){
+					_this.$http.VersionGet('version/getNow').then(res => {
+						console.log('最新版本号version：', res.data.data.version)
+						newVersion = res.data.data.version.split('.').join('')
+						if (newVersion > version) {
+							console.log('当前有最新版本，请更新')
+							_this.showModal = true
+						} else {
+							console.log('当前已经是最新版本')
+							uni.showToast({
+								title: '已是最新版本',
+								duration: 2000
+							});
+						}
+					})
+				}else if ( os == 'iOS'){
+					console.log('查询ios当前有最新版号')
+					_this.$http.VersionGet('version/getAppleNow').then(res => {
+						console.log('ios最新版本号version：', res.data.data.version)
+						newVersion = res.data.data.version.split('.').join('')
+						if (newVersion > version) {
+							console.log('当前有最新版本，请更新')
+							_this.showModal = true
+						} else {
+							console.log('当前已经是最新版本')
+							uni.showToast({
+								title: '已是最新版本',
+								duration: 2000
+							});
+						}
+					})
+				}
+			},
+			UpData(){
+				let os = plus.os.name
+				if (os == 'Android'){
+					this.doUpData()
+				}else if ( os == 'iOS'){
+					this.doIosUp()
+				}
+			},
+			doIosUp(){
+				//在App Store Connect中的App Store下的app信息，可找到appleId
+				let appleId= 111111111
+				plus.runtime.launchApplication({
+					action: `itms-apps://itunes.apple.com/cn/app/id${appleId}?mt=8`
+				}, function(e) {
+					console.log('Open system default browser failed: ' + e.message);
+				});
 			},
             // 下载更新
 			doUpData() {

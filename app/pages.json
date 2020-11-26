@@ -3,7 +3,6 @@
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [
-		
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -16,6 +15,7 @@
 				"navigationBarTitleText": ""
 			}
 		},
+		
 		{
 			"path": "pages/index/index-children/address/address",
 			"style": {
@@ -372,6 +372,15 @@
 		}
         ,{
             "path" : "pages/my/my-children/set/update/updateUsername",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/my-children/set/update/updatePortrait",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
