@@ -556,7 +556,7 @@
 				key: 'time',
 				success(res) {
 					console.log('存储的时间', res.data)
-					let updata = time - res.data > 7 * 24 * 60 * 60 * 1000
+					let updata = time - res.data > 3 * 24 * 60 * 60 * 1000
 					console.log('存储的时间与当前时间相比较', updata)
 					if (updata) {
 						uni.clearStorage()
@@ -577,14 +577,12 @@
 
 		onLoad() {
 			this.update()
-			this.page = 1
 			// this.ifFirstPage = false
 			this.current == 0
 			console.log('onload')
 		},
 		onShow() {
 			console.log('onshow')
-			this.page = 1
 			this.isChild = false
 			this.handleCity()
 		},
@@ -598,8 +596,6 @@
 		onReachBottom() {
 			console.log('onreachbotton')
 			this.showDown = true
-
-			// this.ifFirstPage = false
 			let _this = this
 			// 模拟数据加载
 			setTimeout(function() {
@@ -833,26 +829,8 @@
 							type: 'wgs84',
 							geocode: true,
 							success: (res) => {
-								uni.getSystemInfo({
-									success: function(res) {
-										console.log('/*************************/////当前手机型号------------------', res)
-										if (res.platform == "android") {
-											console.log('当前是android')
-											let objCity = {
-												city: res.address.city
-											}
-											that.handleCityForName(objCity)
-										}else if(res.platform == "ios"){
-											console.log('/*************************/////当前手机型号ios')
-											let objCity = {
-												city: '北京'
-											}
-											that.handleCityForName(objCity)
-										}
-									}
-								});
 								console.log('获取当前城市信息,只需要城市名字', res)
-								
+								that.handleCityForLatAndLong(res)
 								uni.setStorage({
 									key: 'latitudeAndLongitude',
 									data: res,
@@ -869,9 +847,20 @@
 									duration:3000
 								});
 								let objCity = {
-									city: '北京'
+									"areaname": "北京",
+									"areaid": 1,
+									"dir": "bj"
 								}
-								that.handleCityForName(objCity)
+								uni.setStorage({
+									key: 'dirAndAreaid',
+									data: objCity,
+									success() {
+										_this.cityPosition = objCity.areaname
+										_this.isCity = true
+										_this.handleSwiper()
+										_this.handleAllData(objCity.dir)
+									}
+								})
 							}
 						})
 						// #endif
@@ -879,20 +868,18 @@
 				})
 				console.log('存储的城市', this.cityPosition)
 			},
-			
-			
-			//根据城市名字获取当前城市的相应数据信息
-			handleCityForName(obj){
+			//根据城市经纬度获取当前城市的相应数据信息
+			handleCityForLatAndLong(obj){
 				let _this = this
-				console.log('00000000000', obj)
+				console.log('111111111111', obj)
 				//根据城市获取城市信息
-				this.$http.All('area/getAreaByName', obj).then((re) => {
-					console.log('根据城市名字获取当前城市的相应数据信息', re.data.data)
+				this.$http.All('area/getAreaBylatlng', obj).then((re) => {
+					console.log('根据城市-------经纬度---------获取当前城市的相应数据信息', re.data.data)
 					uni.setStorage({
 						key: 'dirAndAreaid',
 						data: re.data.data,
 						success() {
-							console.log('首页存入当前地理信息成功', re.data.data)
+							console.log('首页存入-------------当前地理信息成功', re.data.data)
 							_this.cityPosition = re.data.data.areaname
 							_this.isCity = true
 							_this.handleSwiper()
@@ -901,7 +888,7 @@
 					})
 				})
 			},
-
+			
 			change(index) {
 				this.current = index;
 			},
@@ -987,6 +974,7 @@
 			addRandomData(i) {
 				let _this = this
 				console.log('page', this.page)
+				++this.page;
 				let url = ''
 				let obj = {
 					'page': this.page,
@@ -1118,62 +1106,6 @@
 							if (this.current == 3) {
 								this.flowFourList = this.flowFourList.concat(data)
 							}
-						// } else {
-							// if (this.current == 0) {
-							// 	console.log('6++++++++++++',data)
-							// 	_this.flowOneList = []
-							// 	_this.flowOneList = data
-							// }
-							// if (this.current == 1) {
-							// 	if(this.isChild){
-							// 		this.flowTwoList = []
-							// 		this.$refs.uWaterfall1.clear()
-							// 	}
-							// 	if(this.isCity){
-							// 		this.flowTwoList = []
-							// 		this.$refs.uWaterfall1.clear()
-							// 		setTimeout(()=>{
-							// 			_this.flowTwoList = data
-							// 		},500)
-							// 		this.show = false
-							// 		this.showDown = false
-							// 		this.page += 1
-							// 		return
-							// 	}
-							// 	_this.flowTwoList = data
-							// 	console.log('选择风格后重新赋值的案列数据', this.flowTwoList)
-							// }
-							// if (this.current == 2) {
-							// 	if(this.isCity){
-							// 		this.flowThreeList = []
-							// 		this.$refs.uWaterfall2.clear()
-							// 		setTimeout(()=>{
-							// 			_this.flowThreeList = data
-							// 		},500)
-							// 		this.show = false
-							// 		this.showDown = false
-							// 		this.page += 1
-							// 		return
-							// 	}
-							// 	this.flowThreeList = []
-							// 	this.flowThreeList = data
-							// }
-							// if (this.current == 3) {
-							// 	if(this.isCity){
-							// 		this.flowFourList = []
-							// 		this.$refs.uWaterfall3.clear()
-							// 		setTimeout(()=>{
-							// 			_this.flowFourList = data
-							// 		},500)
-							// 		this.show = false
-							// 		this.showDown = false
-							// 		this.page += 1
-							// 		return
-							// 	}
-							// 	this.flowFourList = []
-							// 	this.flowFourList = data
-							// }
-						// }
 					}
 					this.show = false
 					this.showDown = false
@@ -1207,7 +1139,6 @@
 				} else {
 					this.fege = e.fege
 				}
-
 				this.show = true
 				this.page = 1
 				this.flowTwoList = []
@@ -1256,35 +1187,7 @@
 				this.current = i
 				this.ifFirstPage = true
 				this.isTabActive = i
-				this.page = 1
-				// // if(!this.isCity){
-				// 	if (i == 0 && this.flowOneList.length != 0) {
-				// 		return
-				// 	}
-				// 	if (i == 1 && this.flowTwoList.length != 0) {
-				// 		return
-				// 	}
-				// 	if (i == 2 && this.flowThreeList.length != 0) {
-				// 		return
-				// 	}
-				// 	if (i == 3 && this.flowFourList.length != 0) {
-				// 		return
-				// 	}
-				// 	if (i == 4 && this.list.length != 0) {
-				// 		return
-				// 	}
-				// 	if (i == 5 && this.xueList.length != 0) {
-				// 		return
-				// 	}
-				// // }
-				// console.log('-------------',this.flowOneList)
-				// console.log('-------------',this.flowTwoList)
-				// console.log('-------------',this.flowThreeList)
-				// console.log('-------------',this.flowFourList)
-				// console.log('-------------',this.list.length)
-				// this.show = true
 				this.current = i
-				// this.addRandomData()
 			},
 
 
@@ -1462,6 +1365,10 @@
 		color: rgba(16, 16, 16, 100);
 		width: 392rpx;
 		margin: 28rpx 20rpx 20rpx 20rpx;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2; /* 这里是超出几行省略 */
+		overflow: hidden;
 	}
 
 	.info-title {

@@ -229,20 +229,21 @@
 						});
 					}
 				} else { // ios暂时未找到清理缓存的方法，以下是官方提供的方法，但是无效，会报错  
+				    uni.clearStorage()
+					uni.setStorage({
+						key: 'token',
+						data: _this.tokenInfo,
+						success(res) {
+						},
+						fail() {
+							console.log('存入token失败')
+						}
+					})
 					plus.cache.clear(function() {
 						uni.showToast({
 							title: '缓存清理完成',
 							duration: 2000
 						});
-						uni.setStorage({
-							key: 'token',
-							data: _this.tokenInfo,
-							success(res) {
-							},
-							fail() {
-								console.log('存入token失败')
-							}
-						})
 						_this.formatSize();
 					});
 				}
