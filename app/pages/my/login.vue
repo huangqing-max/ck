@@ -41,16 +41,18 @@
 					<text>{{!pwdOrCode?'验证码登录':'账号密码登录'}}</text>
 				</view>
 			</view>
-			<view class="form-text">
-				<text>其他方式登录</text>
-			</view>
-			<view class="icon-positin">
-				<view class="wx wh60" @click="weixinLogin()">
-					<u-icon class="icon-30" name="weixin-fill" size="60"  color="#36C474"></u-icon>
+			<view v-if="os=='Android'" class="">
+				<view class="form-text">
+					<text>其他方式登录</text>
 				</view>
-				<!-- <view class="qq wh60">
-					<u-icon class="icon-30" name="qq-fill" size="60" color="#4CBCF1"></u-icon>
-				</view> -->
+				<view class="icon-positin">
+					<view class="wx wh60" @click="weixinLogin()">
+						<u-icon class="icon-30" name="weixin-fill" size="60"  color="#36C474"></u-icon>
+					</view>
+					<!-- <view class="qq wh60">
+						<u-icon class="icon-30" name="qq-fill" size="60" color="#4CBCF1"></u-icon>
+					</view> -->
+				</view>
 			</view>
 			<!-- <view>
 				<view class="form-text">
@@ -94,6 +96,7 @@
 				codeError:'',
 				pwdError:'',
 				password:'',
+				os:'',
 				imsi:'', // 国际移动用户识别码
 				code:null,
 				timeCount:60,
@@ -105,11 +108,18 @@
 			}
 		},
 		onShow() {
+			let os = plus.os.name
+			this.os = os
 			//这是设备的编码
 			plus.device.getInfo({
 				success: function(e) {
 					console.log('这是设备的编码', e)
-					this.imsi = e.uuid.substring(0, 15)
+					if (os == 'Android'){
+						this.imsi = e.uuid.substring(0, 15)
+					}else if ( os == 'iOS'){
+						this.imsi = e.uuid
+					}
+					
 				},
 				fail: function(e) {}
 			});

@@ -299,7 +299,7 @@
 			},
 			doIosUp(){
 				//在App Store Connect中的App Store下的app信息，可找到appleId
-				let appleId= 111111111
+				let appleId= ''
 				plus.runtime.launchApplication({
 					action: `itms-apps://itunes.apple.com/cn/app/id${appleId}?mt=8`
 				}, function(e) {
