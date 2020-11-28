@@ -148,10 +148,8 @@
 					// oauth  代表授权登录
 					service: 'oauth',
 					success: function (res) {
-						console.log('----------------',res.provider.indexOf('weixin')>-1)
 						//支持微信、qq和微博等
 						if (res.provider.indexOf('weixin')>-1) {
-							console.log('----------------********')
 							uni.login({
 								provider: 'weixin',
 								success: function(loginRes) {
@@ -188,9 +186,15 @@
 							data:res.data.data,
 							success(res) {							
 								uni.hideToast();
-								uni.switchTab({
-									url:'my',
-								})
+								if(true){
+									uni.switchTab({
+										url:'my',
+									})
+								}else{
+									uni.navigateTo({
+										url:'my-children/bind-phone/bind-phone',
+									})
+								}
 							},
 							fail() {
 								console.log('存入token失败')
