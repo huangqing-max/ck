@@ -184,17 +184,23 @@
 						uni.setStorage({
 							key:'token',
 							data:res.data.data,
-							success(res) {							
-								uni.hideToast();
-								if(true){
-									uni.switchTab({
-										url:'my',
-									})
-								}else{
-									uni.navigateTo({
-										url:'my-children/bind-phone/bind-phone',
-									})
-								}
+							success(re) {							
+								uni.showToast({
+								    title: '登录成功,跳转绑定手机页面...',
+									icon:'none',
+									duration:2000
+								});
+								setTimeout(()=>{
+									if(res.data.data.loginphone != 0){
+										uni.switchTab({
+											url:'my',
+										})
+									}else{
+										uni.navigateTo({
+											url:'my-children/bind-phone/bind-phone',
+										})
+									}	
+								},2000)
 							},
 							fail() {
 								console.log('存入token失败')

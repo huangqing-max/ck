@@ -2,9 +2,9 @@
 	<view>
 		<view class="top">
 			<view class="top-title">
-				<navigator url="../../my" open-type="switchTab" hover-class="none">
+				<!-- <navigator url="../../my" open-type="switchTab" hover-class="none">
 					<u-icon  :bold="true" class="top-title-icon" name="arrow-left"></u-icon>
-				</navigator>
+				</navigator> -->
 			    <view class="top-title-text">绑定手机</view>
 			</view>
 		</view>
@@ -59,7 +59,6 @@
 							},
 							message: '手机号码不正确',
 							// 触发器可以同时用blur和change
-							trigger: ['change'],
 						}
 					],
 				},
@@ -91,6 +90,9 @@
 					]
 				}
 			}
+		},
+		watch:{
+			
 		},
 		created() {
 			
@@ -125,9 +127,9 @@
 						  }
 						let data = {
 							mobile:_this.form.mobile,
-							imsi:_this.imsi
 						}
-						_this.$http.Post('',data).then(res=>{
+						console.log('-------data-------------',data)
+						_this.$http.MyPost('member/getCode',data).then(res=>{
 							console.log('--------绑定手机号-------',res)
 							if(res.data.code == 0){
 								_this.$refs.uToast.show({
@@ -160,20 +162,40 @@
 					if (valid) {
 						console.log('验证通过');
 						let data = {
-							// mobile:this.form.mobile,
 							captcha:this.form.code,
 							mobile:this.form.mobile
 						}
 						console.log('---------------',data);
-						_this.$http.MyPost('member/updateMobile',data).then(res=>{
-							console.log('修改手机号',res)
+						_this.$http.MyPost('member/bindMobileWx',data).then(res=>{
+							console.log('-----------绑定手机号的返回-----------',res)
 							if(res.data.code == 0){
 								_this.$refs.uToast.show({
-									title: '修改手机号成功',
+									title: '绑定手机号成功',
 									type: 'success',
 								})
-								uni.navigateTo({
-									url:'../set'
+								uni.getStorage({
+									key: 'token',
+									success(re) {
+										console.log('++++++token++++++++', re)
+										console.log('++++++res.data.data.token++++++++', res.data.data.token)
+										re.data.token = res.data.data.token
+										uni.setStorage({
+											key:'token',
+											data:re.data,
+											success(r) {							
+												uni.switchTab({
+													url:'../../my'
+												})
+											},
+											fail() {
+												console.log('存入token失败')
+											}
+										})
+										
+									},
+									fail(err) {
+										
+									}
 								})
 							}else{
 								_this.$refs.uToast.show({

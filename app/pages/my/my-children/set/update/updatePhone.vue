@@ -127,9 +127,8 @@
 						  }
 						let data = {
 							mobile:_this.form.mobile,
-							imsi:_this.imsi
 						}
-						_this.$http.Post('member/getCode',data).then(res=>{
+						_this.$http.MyPost('member/getCode',data).then(res=>{
 							console.log('修改手机的验证码获取',res)
 							if(res.data.code == 0){
 								_this.$refs.uToast.show({
