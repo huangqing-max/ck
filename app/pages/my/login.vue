@@ -175,6 +175,8 @@
 					}
 				});
 			},
+			
+			//微信登录方法
 			wxLogin(infoRes){
 				let _this = this
 				_this.$http.Post('login/wxlogin',infoRes).then(res=>{

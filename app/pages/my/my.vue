@@ -76,6 +76,11 @@
 						title: '上传合同',
 						url: 'my-children/upload-contract/upload-contract',
 						img: require('../../common/image/index/icon/my/antFill-file-add.png')
+					},
+					{
+						title: '装修监理',
+						url: 'my-children/supervisor/supervisor',
+						img: require('../../common/image/index/icon/my/antFill-file-add.png')
 					}
 				],
 			}

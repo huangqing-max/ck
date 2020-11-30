@@ -32,6 +32,7 @@ function requestGet(url, data, resolve, reject) {
 			'Authorization': 'Bearer ' + token
 		},
 		success: (res) => {
+			console.log('++++++++++++++++++++++++++',res)
 			if (res.code == 1) {
 				resolve(res);
 				return
@@ -58,7 +59,7 @@ function requestGet(url, data, resolve, reject) {
 			resolve(res)
 		},
 		fail(err) {
-			console.log('请求错误', err)
+			console.log('---------请求错误------------', err)
 			reject(err);
 		}
 	});
@@ -101,7 +102,7 @@ function Get(url, obj) {
 						resolve(res.data)
 					},
 					fail(err) {
-						console.log('获取缓存失败')
+						console.log('获取缓存失败------------dir获取出错------------')
 						requestGet(url, data, resolve, reject)
 					}
 				})
